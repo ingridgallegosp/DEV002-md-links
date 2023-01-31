@@ -6,13 +6,12 @@
 // Node.js file system module 
 const fs = require('fs'); 
 
-
 // Path
 const path = require('path');
 
 // validar ruta relativa o ruta absoluta
 const validatePath = path.isAbsolute('./files/archive.md'); //donde asigno el path?
-console.log(validatePath); //false
+console.log('absolute path:', validatePath); //false
 
 // if false - ruta relativa a ruta absoluta
 const archivePath = path.join(__dirname, './files/archive.md'); 
@@ -20,15 +19,12 @@ const archivePath = path.join(__dirname, './files/archive.md');
 // __dirname palabra reservada deNodeJS para ruta absoluta
 console.log('archivePath es '+ archivePath);
 
-console.log(path.extname(archivePath));
 //path.extname('ruta') nos da la extension del archivo
-
+console.log(path.extname(archivePath));
 
 // Node.js program to demonstrate the fs.existsSync() method
-/* const fs = require('fs');
-
 let fileExists = fs.existsSync(archivePath);
-console.log("archivePath exists:", fileExists); */
+console.log("archivePath exists:", fileExists);
 
 // consultar extension del archivo
 const fileExtension = (archivePath) => {  
@@ -52,13 +48,12 @@ fs.stat(archivePath, (err, stats) => {
     console.error(err);
     return;
   }
-  console.log('Es archivo ' + stats.isFile()); 
-  console.log('Es directorio ' + stats.isDirectory()); 
+  console.log('Es archivo: ' , stats.isFile()); 
+  console.log('Es directorio: ' , stats.isDirectory()); 
 });
 
 //if .md - contiene links?
-
-
+//reg ex?
 
 // Obtener/Listar contenido del directorio ---------
 // const fs = require('fs');
@@ -67,7 +62,6 @@ const folderPath = './files';
 const folderContent = fs.readdirSync(folderPath);
 console.log(folderContent);
 
-  
   
 
 module.exports = {  };
