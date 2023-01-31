@@ -3,10 +3,42 @@
   // ...
 }; */
 
-// Leer un archivo
-const fs = require('fs'); // requerimos el paquete file system que viene ya
+// Node.js file system module 
+const fs = require('fs'); 
 
-fs.readFile('./files/archive.md', 'utf8', (err, data) => { // encoding utf8 porque es archivo de texto
+
+// Path
+const path = require('path');
+
+// validar ruta relativa o ruta absoluta
+const validatePath = path.isAbsolute('./files/archive.md'); //donde asigno el path?
+console.log(validatePath); //false
+
+// if false - ruta relativa a ruta absoluta
+const archivePath = path.join(__dirname, './files/archive.md'); 
+// path.join metodo para concatenar ruta relativa
+// __dirname palabra reservada deNodeJS para ruta absoluta
+console.log('archivePath es '+ archivePath);
+
+console.log(path.extname(archivePath));
+//path.extname('ruta') nos da la extension del archivo
+
+
+// Node.js program to demonstrate the fs.existsSync() method
+/* const fs = require('fs');
+
+let fileExists = fs.existsSync(archivePath);
+console.log("archivePath exists:", fileExists); */
+
+// consultar extension del archivo
+const fileExtension = (archivePath) => {  
+  return path.extname(archivePath)
+}
+console.log(fileExtension('file.txt'));
+
+// Leer un archivo 
+fs.readFile(archivePath, 'utf8', (err, data) => { 
+  // encoding utf8 porque es archivo de texto
   if (err) {
     console.error(err);
     return;
@@ -14,5 +46,28 @@ fs.readFile('./files/archive.md', 'utf8', (err, data) => { // encoding utf8 porq
   console.log(data);
 });
 
-// Averiguar la extensión de un archivo
+// stats
+fs.stat(archivePath, (err, stats) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log('Es archivo ' + stats.isFile()); 
+  console.log('Es directorio ' + stats.isDirectory()); 
+});
 
+//if .md - contiene links?
+
+
+
+// Obtener/Listar contenido del directorio ---------
+// const fs = require('fs');
+const folderPath = './files';
+
+const folderContent = fs.readdirSync(folderPath);
+console.log(folderContent);
+
+  
+  
+
+module.exports = {  };
