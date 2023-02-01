@@ -9,6 +9,12 @@ const fs = require('fs');
 // Path
 const path = require('path');
 
+//Existe?
+fs.access('./files/archive.md', fs.constants.F_OK, (err) => {
+  console.log(`${'./files/archive.md'} ${err ? 'does not exist' : 'exists'}`);
+}); //exists
+
+
 // validar ruta relativa o ruta absoluta
 const validatePath = path.isAbsolute('./files/archive.md'); //donde asigno el path?
 console.log('absolute path:', validatePath); //false
@@ -27,10 +33,10 @@ let fileExists = fs.existsSync(archivePath);
 console.log("archivePath exists:", fileExists);
 
 // consultar extension del archivo
-const fileExtension = (archivePath) => {  
-  return path.extname(archivePath)
-}
-console.log(fileExtension('file.txt'));
+const fileExtension = path.extname(archivePath);
+console.log(fileExtension);
+
+
 
 // Leer un archivo 
 fs.readFile(archivePath, 'utf8', (err, data) => { 
