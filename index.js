@@ -1,4 +1,3 @@
-// import axios from 'axios';
 /* module.exports = () => {
   // ...
 }; */
@@ -8,38 +7,44 @@ const fs = require('fs');
 
 // Path
 const path = require('path');
+let givenPath = './files/archive.md';
 
-//Existe?
-fs.access('./files/archive.md', fs.constants.F_OK, (err) => {
-  console.log(`${'./files/archive.md'} ${err ? 'does not exist' : 'exists'}`);
+// Validar si la ruta existe
+const verifyFileExists = fs.access(givenPath, fs.constants.F_OK, (err) => {
+  console.log(`${givenPath} ${err ? 'does not exist' : 'exists'}`);
 }); //exists
 
+/*// Validar si la ruta existe fs.existsSync() method
+const verifyFileExists = fs.existsSync(givenPath);
+console.log("givenPath exists:", verifyFileExists);
+ */
 
-// validar ruta relativa o ruta absoluta
-const validatePath = path.isAbsolute('./files/archive.md'); //donde asigno el path?
+// Validar si es ruta absoluta
+const validatePath = path.isAbsolute(givenPath);
 console.log('absolute path:', validatePath); //false
 
-// if false - ruta relativa a ruta absoluta
-const archivePath = path.join(__dirname, './files/archive.md'); 
+// Si es ruta relativa transformar a ruta absoluta
+const absolutePath = path.join(__dirname, givenPath); 
 // path.join metodo para concatenar ruta relativa
 // __dirname palabra reservada deNodeJS para ruta absoluta
-console.log('archivePath es '+ archivePath);
+console.log('absolutePath is '+ absolutePath);
 
-//path.extname('ruta') nos da la extension del archivo
-console.log(path.extname(archivePath));
+// Consultar si es archivo o directorio
+fs.stat(absolutePath, (err, stats) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log('Is file: ' , stats.isFile()); 
+  console.log('iEs directory: ' , stats.isDirectory()); 
+});
 
-// Node.js program to demonstrate the fs.existsSync() method
-let fileExists = fs.existsSync(archivePath);
-console.log("archivePath exists:", fileExists);
+// Consultar extension del archivo
+const fileExtens = path.extname(absolutePath); 
+console.log(fileExtens);
 
-// consultar extension del archivo
-const fileExtension = path.extname(archivePath);
-console.log(fileExtension);
-
-
-
-// Leer un archivo 
-fs.readFile(archivePath, 'utf8', (err, data) => { 
+// Leer un archivo --verificar console log
+const readAbsolutePath = fs.readFile(absolutePath, 'utf8', (err, data) => { 
   // encoding utf8 porque es archivo de texto
   if (err) {
     console.error(err);
@@ -48,21 +53,17 @@ fs.readFile(archivePath, 'utf8', (err, data) => {
   console.log(data);
 });
 
-// stats
-fs.stat(archivePath, (err, stats) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log('Es archivo: ' , stats.isFile()); 
-  console.log('Es directorio: ' , stats.isDirectory()); 
-});
-
-//if .md - contiene links?
+// Buscar links en el archivo .md
 //reg ex?
+/* const regExtLink = '\[.*]\(http[a-zA-Z]://.*\)';
+let foundLinks = [];
+console.log(foundLinks);
+const searchLinks = (text) => text.filter((text) => text.includes(regExtLink));
+const textoEncontrado = readAbsolutePath;
+console.log('hooooola' + textoEncontrado);
+// console.log(searchLinks(textoEncontrado)); */
 
-// Obtener/Listar contenido del directorio ---------
-// const fs = require('fs');
+// Obtener/listar contenido del directorio
 const folderPath = './files';
 
 const folderContent = fs.readdirSync(folderPath);
