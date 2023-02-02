@@ -3,6 +3,6 @@
   // ...
 }; */
 
-const mmnmjbvjgvb = (path, options) =>{
+const mdLinks = (path, options) =>{
 
 }

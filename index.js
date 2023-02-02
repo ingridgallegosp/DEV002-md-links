@@ -10,73 +10,66 @@ const path = require('path');
 const givenPath = './files/archive.md';
 
 // Validar si la ruta existe
-const verifyFileExists = (path) =>{
-  fs.access(path, fs.constants.F_OK, (err) => {
-    console.log(`${path} ${err ? 'does not exist' : 'exists'}`);
+const verifyFileExists = (givenPath) =>{
+  fs.access(givenPath, fs.constants.F_OK, (err) => {
+    //console.log(`${givenPath} ${err ? 'does not exist' : 'exists'}`);
   }); 
+}; //exists
+
+
+// Validar si es ruta absoluta - TESTEADO
+const validatePath = (givenPath) => {
+  return path.isAbsolute(givenPath);
 };
-verifyFileExists(givenPath);//exists
 
-/*// Validar si la ruta existe fs.existsSync() method
-const verifyFileExists = fs.existsSync(givenPath);
-console.log("givenPath exists:", verifyFileExists);
- */
+// Si es ruta relativa transformar a ruta absoluta - TESTEADO
+const toAbsolutePath = (givenPath) => {
+  return path.join(__dirname, givenPath);
+};
 
-// Validar si es ruta absoluta
-const validatePath = path.isAbsolute(givenPath);
-console.log('absolute path:', validatePath);
-
-
-// Si es ruta relativa transformar a ruta absoluta
-const absolutePath = path.join(__dirname, givenPath); 
-// path.join metodo para concatenar ruta relativa
-// __dirname palabra reservada deNodeJS para ruta absoluta
-console.log('absolutePath is '+ absolutePath);
 
 // Consultar si es archivo
 const isFile = (path) => {
   fs.stat(path, (err, stats) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log('is file: ' , stats.isFile()); 
-});
+    if (err) {
+      console.error(err);
+      return stats.isFile();
+    }
+    console.log('is file: ' , stats.isFile()); 
+  });
 };
-isFile(absolutePath);
 
 // Consultar si es directorio
 const isDirectory = (path) => {
   fs.stat(path, (err, stats) => {
-  if (err) {
-    console.error(err);
-    return;
-  } 
-  console.log('is directory: ' , stats.isDirectory()); 
-});
+    if (err) {
+      console.error(err);
+      return stats.isDirectory();
+    } 
+    console.log('is directory: ' , stats.isDirectory()); 
+  });
 };
-isDirectory(absolutePath);
-
 
 // Consultar extension del archivo
-const fileExtens = path.extname(absolutePath); 
-console.log(fileExtens);
+const fileExtens = (givenPath) => {
+  return path.extname(givenPath)
+}
 
 // Leer un archivo
-const readFilePath = (path) => {
-  fs.readFile(path, 'utf8', (err, data) => { 
+const readFilePath = (givenPath) => {
+  fs.readFile(givenPath, 'utf8', (err, data) => { 
     // encoding utf8 porque es archivo de texto
     if (err) {
       console.error(err);
       return;
     }
-  console.log(data);
+    return data;
   });
 };
-readFilePath(absolutePath);
+console.log(readFilePath(givenPath));
 
 // Buscar links en el archivo .md
-//reg ex?
+
 const regExtLink = '\[.*]\(http[a-zA-Z]://.*\)';
 let foundLinks = [];
 
@@ -85,8 +78,50 @@ let foundLinks = [];
 // Obtener/listar contenido del directorio
 const folderPath = './files';
 
-const folderContent = fs.readdirSync(folderPath);
-console.log(folderContent);
+const folderContent = (path) =>{
+   fs.readdirSync(path);
+}
+folderContent(folderPath);
 
+// -----------------------------------
+/* const archivePath = path.join(__dirname, './files/archive.md'); 
+
+// __dirname palabra reservada deNodeJS para ruta absoluta
+console.log('archivePath es '+ archivePath);
+
+console.log(path.extname(archivePath));
+
+// consultar extension del archivo
+const fileExtension = (archivePath) => {  
+  return path.extname(archivePath)
+}
+console.log(fileExtension('file.txt'));
+
+// Leer un archivo 
+fs.readFile(archivePath, 'utf8', (err, data) => { 
+  // encoding utf8 porque es archivo de texto
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(data);
+});
+
+// stats
+fs.stat(archivePath, (err, stats) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log('Es archivo ' + stats.isFile()); 
+  console.log('Es directorio ' + stats.isDirectory()); 
+}); */
+
+
+
+
+module.exports = { 
   
-module.exports = { validatePath };
+  validatePath,
+  toAbsolutePath,
+};
