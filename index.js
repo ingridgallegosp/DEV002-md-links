@@ -11,15 +11,19 @@ const folderPath = './files';
 
 // Options Validation
 // falta
-fs.access
+// fs.access
 
-// File Existence Validation
-const verifyFileExists = (givenPath) =>{
+// File Existence Validation - TESTEADO
+const verifyPathExists =(givenPath) => {
+  return fs.existsSync(givenPath);
+};
+// console.log(verifyPathExists(givenPath))
+
+/* const verifyFileExists = (givenPath) =>{
   fs.access(givenPath, fs.constants.F_OK, (err) => {
     console.log(`${givenPath} ${err ? 'does not exist' : 'exists'}`);
   }); 
-};
-// ---console
+}; */
 
 // Absolute Path Validation - TESTEADO
 const validatePath = (givenPath) => {
@@ -43,7 +47,7 @@ const pathIsDirectory = (givenPath) => {
   return stats.isDirectory();
 };
 
-// Looking for File Extension - TESTEADO
+// Looking for File Extension 
 const fileExt = (givenPath) => {
   return path.extname(givenPath)
 };
@@ -59,53 +63,52 @@ const mdFile = (givenPath) => {
 
 // Reading File
 
-/* const readFilePath = (path) => {
-  fs.readFile(path, 'utf-8', (error, data) => { 
-    // encoding utf8 porque es archivo de texto
-    if (!error) {
-      console.log(data);
-    } else {
-      console.error(error);
-    }
-  });
-};  */
-fs.readFile(givenPath, 'utf8', function(error, data){
+fs.readFile(givenPath, 'utf8',(error, data) => {
+  if (error) {
+    console.error(error)
+  } else {
+  console.log(data);
+  }
+}); 
+
+
+/* const readFilePath = (givenPath) => {
+  fs.readFile(givenPath, 'utf-8', (error, data) => { 
     if (error) {
-      console.error(error)
-    }
-    // Display the file content
-    console.log(data);
-});
+    console.error(error)
+  }
+  // Display the file content
+  console.log(data);
+  });
+}; 
+readFilePath(givenPath) */
 
 // Looking for links in a .md file
-
-/* const regExtLink = '\[.*]\(http[a-zA-Z]://.*\)';
-let foundLinks = []; */
+const regext = /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g;
+let foundLinks = [];
 
 /* const getMdFileArray = (givenPath) => {
-  let files = [];
-  if (isFile(givenPath) && isMdFile(givenPath)) {
-      files.push(pathname);
-  } else if (isDirectory(givenPath)) {
-      const items = readDirectory(givenPath);
-      items.map((item) => {
-          files = files.concat(getMdFileArray(`${pathname}/${item}`));
-      });
-  }
+    let files = [];
+    if (pathIsFile(givenPath) && mdFile(givenPath)) {
+        files.push(givenPath);
+  } 
   return files;
 } */
 
-// Getting directory content
-const directoryContent = fs.readdirSync(folderPath);
-console.log(directoryContent)
+// Getting directory content - TESTEADO
+const directoryContent =(folderPath) => fs.readdirSync(folderPath);
+//console.log(directoryContent)
 
 // Validate Link
 
+
 module.exports = { 
-  
+  verifyPathExists,
   validatePath,
   toAbsolutePath,
   pathIsFile,
   pathIsDirectory,
   mdFile,
+
+  directoryContent,
 };
