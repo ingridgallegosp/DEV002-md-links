@@ -67,10 +67,9 @@ fs.readFile(givenPath, 'utf8',(error, data) => {
   if (error) {
     console.error(error)
   } else {
-  console.log(data);
+    console.log(data);
   }
 }); 
-
 
 /* const readFilePath = (givenPath) => {
   fs.readFile(givenPath, 'utf-8', (error, data) => { 
