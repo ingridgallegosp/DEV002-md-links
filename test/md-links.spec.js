@@ -1,26 +1,21 @@
-// const mdLinks = require('../index.js');
-/* describe('mdLinks', () => {
-
-  it('should...', () => {
-    console.log('FIX ME!');
-  });
-
-}); */
 const { 
   verifyPathExists,
   validatePath,
   toAbsolutePath,
+  pathValidation,
   pathIsFile,
   pathIsDirectory,
   mdFile,
-  readFilePath,
-  directoryContent, } = require('../index.js');
+  readingFile,
+  getMdFileArray,
+  getLinks,
+  directoryContent } = require('../index.js');
 
 const testRelativePath = '../archivos.md';
 const testAbsolutePath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos.md';
 const testFakePath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos22.md';
 const testTxtPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/text.txt';
-const testOnlyText = 'C:Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/lecturaComplementaria/faq.md';
+const testOnlyFaq = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/lecturaComplementaria/faq.md';
 const resultFaq = 'Para que el módulo sea instalable desde GitHub solo tiene que estar en un repo público de GitHub y contener un `package.json` válido';
 const testDirectoryPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto';
 const insideDirectory = ["archivos.md", "criteriosAceptacion", "objetivos", "opcionales.md"];
@@ -68,6 +63,24 @@ describe('Tests para validar si ruta relativa es convertida en absoluta', () => 
     const result = toAbsolutePath(testRelativePath);
     expect(result).toEqual(testAbsolutePath);
   });  
+});
+
+// Path Validation
+describe('Tests para validar si es ruta relativa  y si es, se convierta en absoluta', () => {
+  
+  it('should be a function', () => {
+    expect(typeof pathValidation).toBe('function');
+  });
+  
+  it('debe mostrar ruta absoluta si se le asigna la ruta absoluta',  () => {
+    const result = pathValidation(testAbsolutePath);
+    expect(result).toEqual(testAbsolutePath);
+  });  
+  it('debe mostrar ruta absoluta si se le asigna la ruta relativa',  () => {
+    const result = pathValidation(testRelativePath);
+    expect(result).toEqual(testAbsolutePath);
+  });
+
 });
 
 // File Validation 
@@ -123,6 +136,20 @@ describe('Tests para obtener la extension de un archivo', () => {
     expect(result).toEqual(false);
   }); 
 });
+
+/* // Reading file - cambiar test- promesa
+describe('Tests para obtener el contenido del archivo', () => {
+
+  it('should be a function', () => {
+    expect(typeof readingfile).toBe('function');
+  });
+  
+  it('debe mostrar el texto del archivo',  () => {
+    const result = readingfile(testOnlyFaq);
+    expect(result).toEqual(resultFaq);
+  });  
+}); */
+
 // Reading directory
 describe('Tests para obtener los archivos de un directorio', () => {
 
@@ -134,6 +161,23 @@ describe('Tests para obtener los archivos de un directorio', () => {
     const result = directoryContent(testDirectoryPath);
     expect(result).toEqual(insideDirectory);
   });  
-})
+});
+
+// TEST ASINCRONO CON UN FILE MD PARA VER SI ME DEVUELVE LOS LINKS Y DATOS QUE ESPERO
 
 
+// mdLinks function
+describe('mdLinks', () => {
+
+  it('should...', () => {
+    console.log('FIX ME!');
+  });
+  /* it('should be return a promise', () => {
+    expect(mdLinks()).toBe(typeof Promise);
+  }); */
+  it('should reject a promise when path does not exist', () => {
+    return(mdLinks('./noexuste.md')).catch((error) =>{
+    expect(error).toBe('La ruta no existe')
+    });
+  });
+});   
