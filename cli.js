@@ -1,6 +1,6 @@
 // #!/usr/bin/env node
 
-const { mdLinks } = require('./mdlinks.js');
+const { mdLinks } = require('./index.js');
 
 mdLinks('./files/archive.md')
 .then(()=>{

@@ -9,7 +9,9 @@ const {
   readingFile,
   getMdFileArray,
   getLinks,
-  directoryContent } = require('../index.js');
+  directoryContent } = require('../data.js');
+
+const { mdLinks } = require('../index.js');
 
 const testRelativePath = '../archivos.md';
 const testAbsolutePath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos.md';
@@ -137,18 +139,6 @@ describe('Tests para obtener la extension de un archivo', () => {
   }); 
 });
 
-/* // Reading file - cambiar test- promesa
-describe('Tests para obtener el contenido del archivo', () => {
-
-  it('should be a function', () => {
-    expect(typeof readingfile).toBe('function');
-  });
-  
-  it('debe mostrar el texto del archivo',  () => {
-    const result = readingfile(testOnlyFaq);
-    expect(result).toEqual(resultFaq);
-  });  
-}); */
 
 // Reading directory
 describe('Tests para obtener los archivos de un directorio', () => {
@@ -162,6 +152,23 @@ describe('Tests para obtener los archivos de un directorio', () => {
     expect(result).toEqual(insideDirectory);
   });  
 });
+
+// Test promesas reading file y get links
+
+
+/* // Reading file - cambiar test- promesa
+describe('Tests para obtener el contenido del archivo', () => {
+
+  it('should be a function', () => {
+    expect(typeof readingfile).toBe('function');
+  });
+  
+  it('debe mostrar el texto del archivo',  () => {
+    const result = readingfile(testOnlyFaq);
+    expect(result).toEqual(resultFaq);
+  });  
+}); */
+
 
 // TEST ASINCRONO CON UN FILE MD PARA VER SI ME DEVUELVE LOS LINKS Y DATOS QUE ESPERO
 

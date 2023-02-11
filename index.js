@@ -1,167 +1,64 @@
-// Node.js file system module 
-const fs = require('fs'); 
-const path = require('path');
-const open = require('node:fs/promises');
+const { 
+  verifyPathExists,
+  pathValidation,
+  getMdFileArray,
+  getLinks } = require('./data.js');
 
-const givenPath = './files/archive.md';
-const folderPath = './files';
-const rutaPrueba = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos.md';
-
-
-// Options Validation
-// falta
-// fs.access
-
-// File Existence Validation - TESTEADO
-const verifyPathExists =(givenPath) => {
-  return fs.existsSync(givenPath);
-};
-// console.log(verifyPathExists(givenPath))
-
-/* const verifyFileExists = (givenPath) =>{
-  fs.access(givenPath, fs.constants.F_OK, (err) => {
-    console.log(`${givenPath} ${err ? 'does not exist' : 'exists'}`);
-  }); 
-}; */
-
-// Absolute Path Validation - TESTEADO
-const validatePath = (givenPath) => {
-  return path.isAbsolute(givenPath);
-};
-
-// From Relative Path to Absolute Path - TESTEADO
-const toAbsolutePath = (givenPath) => {
-  return path.join(__dirname, givenPath);
-};
-// path.resolve
-
-const pathValidation = (givenPath) => {
-  if (validatePath(givenPath)){   
-      console.log("La ruta ingresada es absoluta: " + givenPath)
-      return givenPath;
-  } else {
-      console.log("La ruta ingresada es relativa: " + givenPath)
-      let absolutePath = toAbsolutePath(givenPath);
-      console.log("Ruta resuelta: " + absolutePath);
-      return absolutePath;
-  }
-};
-/*  */
-// File Validation - TESTEADO
-const pathIsFile = (givenPath) => {
-  const stats = fs.statSync(givenPath);
-  return stats.isFile();
-};
-
-// Directory Validation - TESTEADO
-const pathIsDirectory = (givenPath) => {
-  const stats = fs.statSync(givenPath);
-  return stats.isDirectory();
-};
-
-// Looking for .md File with file extension path.extname(path) - TESTEADO 
-const mdFile = (givenPath) => {
-  if(path.extname(givenPath) === ".md"){
-    return  true 
-  } else {
-    return false
-  }
-};
-
-// Array with .md files
-const getMdFileArray = (givenPath) => {
-  let files = [];
-  if (pathIsFile(givenPath) && mdFile(givenPath)) {
-      files.push(givenPath);
-} 
-return files;
-}
-/* let arrayWithMdFiles = getMdFileArray(rutaPrueba);
-console.log(arrayWithMdFiles); */
-
-// Reading File
-/* fs.readFile(givenPath, 'utf8',(error, data) => {
-  if (error) {
-    console.error(error)
-    // return;
-  } else {
-    console.log(data);
-  }
-}); */
-
-// For each md file in array: Read and get links
-const readingFile = (givenPath) => {
-  return new Promise((resolve, reject) => {
-      fs.readFile(givenPath, 'utf8', (error, data) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve(data);
-        }
-      });
-    });
-};  
-/* readingFile(givenPath)
-.then((data)=>{
-  console.log(data)
-})
-.catch((error) => {
-    console.log(error)
-}); */ // leer archivo
-
-// Looking for links in a .md file
-// .exec() method executes a search for a match in a specified string
-
-const regex = /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g;
-const getLinks = (givenPath) => { 
-  return new Promise((resolve, reject) => {
-    const links = [];
-    readingFile(givenPath)
-      .then((data) => {
-        let match = regex.exec(data);
-        while (match !== null) {
-          links.push({
-            href: match[2],
-            text: match[1],
-            file: givenPath,
-          });
-          match = regex.exec(data);
-        }
-        resolve(links);
-      })
-    .catch((error) => reject(error));
+const mdLinks = (ruta, options) =>{
+  return new Promise((resolve, reject)=>{
+      //Evaluar si ruta existe
+      // si la ruta existe:
+      if(verifyPathExists(ruta)){
+          //chequear si es ruta absoluta
+          //cambiar de ruta relativa a absoluta
+          let rutaAb = pathValidation(ruta)
+          console.log(rutaAb)
+          //chequear si es archivo y si es archivo md //si es directorio filtrar .md-recursividad luego
+              if(getMdFileArray(rutaAb)){
+                  let arrayWithMdFiles = getMdFileArray(rutaAb);
+                  // console.log(arrayWithMdFiles);
+                  //si no hay archivos
+                  if (!arrayWithMdFiles){
+                      reject('No hay archivos extension .md')
+                  } else {
+                      // for each md file: read and get links
+                      let mdArray = arrayWithMdFiles.forEach((element) => {
+                          getLinks(element)
+                          .then((links)=>{
+                              resolve(links);
+                              console.log(links)
+                              })
+                          .catch((error) => {
+                              console.log(error)
+                          });  
+                      });
+                      //si no hay opciones muestro el array anterior
+                      if(!options){
+                          //resolve(mdArray);
+                      //si validate false
+                      //
+                      } else if(options.validate === false ){
+                          resolve(mdArray);
+                      //si validate true
+                      //hago consulta con fetch o axios si el href funciona--AXIOS
+                      } else if (options.validate === true ) {
+                          console.log('en proceso')
+                      }
+                  }
+              } 
+      } else {
+      // Si la ruta no existe, rechaza la promesa
+          reject('La ruta no existe');
+      }
   });
 };
 
-/* getLinks(rutaPrueba)
-.then((links)=>{
-   console.log(links)
-    })
-     .catch((error) => {
-    console.log(error)
-}); */ // muestra los links
-
-// Ask (with fetch or axios) if href works
-
-
-
-
-// Getting directory content - TESTEADO
-const directoryContent =(folderPath) => fs.readdirSync(folderPath);
-//console.log(directoryContent)
-
-
-
-module.exports = { 
-  verifyPathExists,
-  validatePath,
-  toAbsolutePath,
-  pathValidation,
-  pathIsFile,
-  pathIsDirectory,
-  mdFile,
-  readingFile,
-  getMdFileArray,
-  getLinks,
-  directoryContent,
-};
+/* mdLinks('./files/archive.md')
+.then(()=>{
+  console.log()
+})
+.catch((error) => {
+  console.log(error)
+});
+ */
+module.exports = { mdLinks };
