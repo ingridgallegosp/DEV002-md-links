@@ -19,37 +19,41 @@ const mdLinks = (ruta, options) =>{
                 if(getMdFileArray(rutaAb)){
                     let arrayWithMdFiles = getMdFileArray(rutaAb);
                     // console.log(arrayWithMdFiles);
-                    if (arrayWithMdFiles === 0){
-                        reject('No hay archivos .md')
-                    } else{
-                        console.log('archivos encontrados')
-                                            // for each md file: read and get links
-                                            let recorrerPath = arrayWithMdFiles.map((element, index) => {
-                                                let links = []
-                                                do { getLinks(element)
-                                                //console.log(getLinks(element))
-                                                }
-                                                while (index >0) {
-                                                    return links
-                                                }
-                                            });
-                                            console.log(recorrerPath); 
-                        
-                    } 
-                }
+                    //si no hay archivos
+                    if (!arrayWithMdFiles){
+                        reject('No hay archivos extension .md')
+                    } else {
+                        // for each md file: read and get links
+                        arrayWithMdFiles.forEach((element) => {
+                            getLinks(element)
+                            .then((links)=>{
+                                resolve(links);
+                                console.log(links)
+                                })
+                            .catch((error) => {
+                                console.log(error)
+                            });  
+                        });
+                        //si validate true
+                        //hago consulta con fetch o axios si el href funciona--AXIOS
+                        //if(options == validate:true ){
 
-                
-                
-            resolve  //muestro href, ruta y texto
+                        //}
+                    }
+                } 
         } else {
         // Si la ruta no existe, rechaza la promesa
             reject('La ruta no existe');
         }
-    })
+    });
 };
 
+mdLinks('./files/archive.md')
+.then(()=>{
+    console.log()
+})
+.catch((error) => {
+    console.log(error)
+});
  
-  //si validate true
-  //leer archivo y obtengo links
-  //hago consulta con fetch o axios si el href funciona--AXIOS
-  // 
+  

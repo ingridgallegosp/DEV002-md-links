@@ -1,10 +1,11 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 
-//const { mdLinks } = require('./mdlinks.js');
 const { mdLinks } = require('./mdlinks.js');
 
 mdLinks('./files/archive.md')
-.then(()=>{})
+.then(()=>{
+    console.log()
+})
 .catch((error) => {
     console.log(error)
 });

@@ -5,7 +5,8 @@ const open = require('node:fs/promises');
 
 const givenPath = './files/archive.md';
 const folderPath = './files';
-const ruta = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos.md';
+const rutaPrueba = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos.md';
+
 
 // Options Validation
 // falta
@@ -58,8 +59,7 @@ const pathIsDirectory = (givenPath) => {
   return stats.isDirectory();
 };
 
-// Looking for .md File - TESTEADO
-// Looking for file extension path.extname(path)
+// Looking for .md File with file extension path.extname(path) - TESTEADO 
 const mdFile = (givenPath) => {
   if(path.extname(givenPath) === ".md"){
     return  true 
@@ -76,9 +76,8 @@ const getMdFileArray = (givenPath) => {
 } 
 return files;
 }
-console.log(getMdFileArray(ruta))
-let arrayWithMdFiles = getMdFileArray(ruta);
-// console.log(arrayWithMdFiles);
+/* let arrayWithMdFiles = getMdFileArray(rutaPrueba);
+console.log(arrayWithMdFiles); */
 
 // Reading File
 /* fs.readFile(givenPath, 'utf8',(error, data) => {
@@ -89,15 +88,6 @@ let arrayWithMdFiles = getMdFileArray(ruta);
     console.log(data);
   }
 }); */
-
-/* const readingfile = (absolutePath) => {
-  fs.readFile(absolutePath, 'utf8',(error, data) => {
-    if (error) {
-      console.error(error)
-    }
-      console.log(data);
-  }
-)}; // undefined*/ 
 
 // For each md file in array: Read and get links
 const readingFile = (givenPath) => {
@@ -111,27 +101,19 @@ const readingFile = (givenPath) => {
       });
     });
 };  
-// console.log(readingFile(givenPath));//pending promise 
+/* readingFile(givenPath)
+.then((data)=>{
+  console.log(data)
+})
+.catch((error) => {
+    console.log(error)
+}); */ // leer archivo
 
 // Looking for links in a .md file
-const regex = /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g;
-// .exec() method executes a search for a match in a specified string 
-const getLinks = (givenPath) => {
-  return new Promise((resolve, reject) => {
-      fs.readFile(givenPath, 'utf8', (error, data) => {
-          if(error) {
-              console.log("Error: "+ error)
-              return reject(error);
-          } else {
-              //return resolve(data.match(regex));
-              return resolve(regex.exec(data)); 
-          }
-      });
-  });
-}
-// console.log(getLinks(givenPath));
+// .exec() method executes a search for a match in a specified string
 
-/* const getLinks = (givenPath) => { 
+const regex = /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g;
+const getLinks = (givenPath) => { 
   return new Promise((resolve, reject) => {
     const links = [];
     readingFile(givenPath)
@@ -139,7 +121,8 @@ const getLinks = (givenPath) => {
         let match = regex.exec(data);
         while (match !== null) {
           links.push({
-            
+            href: match[2],
+            text: match[1],
             file: givenPath,
           });
           match = regex.exec(data);
@@ -149,10 +132,17 @@ const getLinks = (givenPath) => {
     .catch((error) => reject(error));
   });
 };
-console.log(getLinks(ruta)); //pending promise  */
 
+/* getLinks(rutaPrueba)
+.then((links)=>{
+   console.log(links)
+    })
+     .catch((error) => {
+    console.log(error)
+}); */ // muestra los links
 
 // Ask (with fetch or axios) if href works
+
 
 
 
