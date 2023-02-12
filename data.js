@@ -2,10 +2,12 @@
 const fs = require('fs'); 
 const path = require('path');
 const axios = require('axios');
+const open = require('node:fs/promises');
+const { resolve } = require('path');
 
 // const givenPath = './files/archive.md';
-const folderPath = './files';
-const rutaPrueba = './files/archive.md';
+// folderPath = './files';
+// const rutaPrueba = './files/archive.md';
 
 // Options Validation
 // falta
@@ -30,12 +32,12 @@ const validatePath = (givenPath) => {
 
 // From Relative Path to Absolute Path - TESTEADO
 const toAbsolutePath = (givenPath) => {
+    // eslint-disable-next-line no-undef
     return path.join(__dirname, givenPath);
 };
 // path.resolve
 //path.resolve('../', '/../', '../')
 // '/home' on Linux
-// '/Users' on OSX
 // 'C:\\Users' on Windows
 
 const pathValidation = (givenPath) => {
@@ -145,23 +147,29 @@ const getLinks = (givenPath) => {
     }); */ // muestra los links
 
 // Ask (with fetch or axios) if href works
-
 const validateLinks = (url) => {
     axios.get(url)
         .then(response => {
-        //console.log(response);
+            //console.log(response);
             console.log(response.config.url);
-            console.log(response.status);
-            console.log(response.statusText);
+            console.log('stats: ', response.status);
+            console.log('OK: ', response.statusText);
         })
         .catch(error => {
             //console.log(error);
             console.log(error.config.url);
-            console.log(error.response.status);
-            console.log(error.response.statusText);
+            console.log('stats: ', error.response.status);
+            console.log('OK: ', error.response.statusText);
         });
 };
 // console.log(validateLinks('https://es.wikipedia.org/wiki/Markdown'));
+
+// valida link o array de links
+/* const validar = (links) => {
+    return new Promise((resolve, reject) =>{
+
+    })
+}; */
 
 
 // Getting directory content - TESTEADO
