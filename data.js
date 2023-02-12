@@ -1,12 +1,11 @@
 // Node.js file system module 
 const fs = require('fs'); 
 const path = require('path');
-//const axios = require('axios');
+const axios = require('axios');
 
-const givenPath = './files/archive.md';
+// const givenPath = './files/archive.md';
 const folderPath = './files';
-const rutaPrueba = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos.md';
-const hrefPrueba =  'https://es.wikipedia.org/wiki/Markdown';
+const rutaPrueba = './files/archive.md';
 
 // Options Validation
 // falta
@@ -14,7 +13,7 @@ const hrefPrueba =  'https://es.wikipedia.org/wiki/Markdown';
 
 // File Existence Validation - TESTEADO
 const verifyPathExists =(givenPath) => {
-  return fs.existsSync(givenPath);
+    return fs.existsSync(givenPath)
 };
 // console.log(verifyPathExists(givenPath))
 
@@ -26,12 +25,12 @@ const verifyPathExists =(givenPath) => {
 
 // Absolute Path Validation - TESTEADO
 const validatePath = (givenPath) => {
-  return path.isAbsolute(givenPath);
+    return path.isAbsolute(givenPath);
 };
 
 // From Relative Path to Absolute Path - TESTEADO
 const toAbsolutePath = (givenPath) => {
-  return path.join(__dirname, givenPath);
+    return path.join(__dirname, givenPath);
 };
 // path.resolve
 //path.resolve('../', '/../', '../')
@@ -40,45 +39,45 @@ const toAbsolutePath = (givenPath) => {
 // 'C:\\Users' on Windows
 
 const pathValidation = (givenPath) => {
-  if (validatePath(givenPath)){   
-      console.log("La ruta ingresada es absoluta: " + givenPath)
-      return givenPath;
-  } else {
-      console.log("La ruta ingresada es relativa: " + givenPath)
-      let absolutePath = toAbsolutePath(givenPath);
-      console.log("Ruta resuelta: " + absolutePath);
-      return absolutePath;
-  }
+    if (validatePath(givenPath)){   
+        console.log("La ruta ingresada es absoluta: " + givenPath)
+        return givenPath;
+    } else {
+        console.log("La ruta ingresada es relativa: " + givenPath)
+        let absolutePath = toAbsolutePath(givenPath);
+        console.log("Ruta resuelta: " + absolutePath);
+        return absolutePath;
+    }
 };
 /*  */
 // File Validation - TESTEADO
 const pathIsFile = (givenPath) => {
-  const stats = fs.statSync(givenPath);
-  return stats.isFile();
+    const stats = fs.statSync(givenPath);
+    return stats.isFile();
 };
 
 // Directory Validation - TESTEADO
 const pathIsDirectory = (givenPath) => {
-  const stats = fs.statSync(givenPath);
-  return stats.isDirectory();
+    const stats = fs.statSync(givenPath);
+    return stats.isDirectory();
 };
 
 // Looking for .md File with file extension path.extname(path) - TESTEADO 
 const mdFile = (givenPath) => {
-  if(path.extname(givenPath) === ".md"){
-    return  true 
-  } else {
-    return false
-  }
+    if(path.extname(givenPath) === ".md"){
+        return  true 
+    } else {
+        return false
+    }
 };
 
 // Array with .md files
 const getMdFileArray = (givenPath) => {
-  let files = [];
-  if (pathIsFile(givenPath) && mdFile(givenPath)) {
-      files.push(givenPath);
-} 
-return files;
+    let files = [];
+    if (pathIsFile(givenPath) && mdFile(givenPath)) {
+        files.push(givenPath);
+    } 
+    return files;
 }
 /* let arrayWithMdFiles = getMdFileArray(rutaPrueba);
 console.log(arrayWithMdFiles); */
@@ -95,14 +94,14 @@ console.log(arrayWithMdFiles); */
 
 // For each md file in array: Read and get links
 const readingFile = (givenPath) => {
-  return new Promise((resolve, reject) => {
-      fs.readFile(givenPath, 'utf8', (error, data) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve(data);
-        }
-      });
+    return new Promise((resolve, reject) => {
+        fs.readFile(givenPath, 'utf8', (error, data) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(data);
+            }
+        });
     });
 };  
 /* readingFile(givenPath)
@@ -118,46 +117,51 @@ const readingFile = (givenPath) => {
 
 const regex = /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g;
 const getLinks = (givenPath) => { 
-  return new Promise((resolve, reject) => {
-    const links = [];
-    readingFile(givenPath)
-      .then((data) => {
-        let match = regex.exec(data);
-        while (match !== null) {
-          links.push({
-            href: match[2],
-            text: match[1],
-            file: givenPath,
-          });
-          match = regex.exec(data);
-        }
-        resolve(links);
-      })
-    .catch((error) => reject(error));
-  });
+    return new Promise((resolve, reject) => {
+        const links = [];
+        readingFile(givenPath)
+            .then((data) => {
+                let match = regex.exec(data);
+                while (match !== null) {
+                    links.push({
+                        href: match[2],
+                        text: match[1],
+                        file: givenPath,
+                        // content: data
+                    });
+                    match = regex.exec(data);
+                }
+                resolve(links);
+            })
+            .catch((error) => reject(error));
+    });
 };
 /* getLinks(rutaPrueba)
-.then((links)=>{
-   console.log(links)
+    .then((links)=>{
+        console.log(links)
     })
-     .catch((error) => {
-    console.log(error)
-}); */ // muestra los links
+    .catch((error) => {
+        console.log(error)
+    }); */ // muestra los links
 
 // Ask (with fetch or axios) if href works
-const axios = require('axios');
 
-axios.get('https://es.wikipedia.org/wiki/Markdowns')
-  .then(response => {
-    console.log(response.config.url);
-    console.log(response.status);
-    console.log(response.statusText);
-  })
-  .catch(error => {
-    //console.log(error);
-    console.log(error.response.status);
-    console.log(error.response.statusText);
-  });
+const validateLinks = (url) => {
+    axios.get(url)
+        .then(response => {
+        //console.log(response);
+            console.log(response.config.url);
+            console.log(response.status);
+            console.log(response.statusText);
+        })
+        .catch(error => {
+            //console.log(error);
+            console.log(error.config.url);
+            console.log(error.response.status);
+            console.log(error.response.statusText);
+        });
+};
+// console.log(validateLinks('https://es.wikipedia.org/wiki/Markdown'));
 
 
 // Getting directory content - TESTEADO
@@ -166,16 +170,17 @@ const directoryContent =(folderPath) => fs.readdirSync(folderPath);
 
 
 module.exports = { 
-  verifyPathExists,
-  validatePath,
-  toAbsolutePath,
-  pathValidation,
-  pathIsFile,
-  pathIsDirectory,
-  mdFile,
-  readingFile,
-  getMdFileArray,
-  getLinks,
-  directoryContent,
+    verifyPathExists,
+    validatePath,
+    toAbsolutePath,
+    pathValidation,
+    pathIsFile,
+    pathIsDirectory,
+    mdFile,
+    readingFile,
+    getMdFileArray,
+    getLinks,
+    directoryContent,
+    validateLinks,
 };
   

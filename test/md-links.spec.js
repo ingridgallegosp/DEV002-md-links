@@ -25,132 +25,133 @@ const insideDirectory = ["archivos.md", "criteriosAceptacion", "objetivos", "opc
 // File Existence Validation
 describe('Tests para validar si ruta existe', () => {
   
-  it('debe mostrar true si la ruta dada existe',  () => {
-    const result = verifyPathExists(testAbsolutePath);
-    expect(result).toEqual(true);
-  });
+    it('debe mostrar true si la ruta dada existe',  () => {
+        const result = verifyPathExists(testAbsolutePath);
+        expect(result).toEqual(true);
+    });
 
   it('debe mostrar false si la ruta dada no existe',  () => {
-    const result = verifyPathExists(testFakePath);
-    expect(result).toEqual(false);
-  });
+        const result = verifyPathExists(testFakePath);
+        expect(result).toEqual(false);
+    });
 }); 
 
 // Absolute Path Validation
 describe('Tests para validar si ruta es absoluta', () => {
   
-  it('should be a function', () => {
-    expect(typeof validatePath).toBe('function');
-  });
+    it('should be a function', () => {
+        expect(typeof validatePath).toBe('function');
+    });
   
-  it('debe mostrar true si la ruta dada es absoluta',  () => {
-    const result = validatePath(testAbsolutePath);
-    expect(result).toEqual(true);
-  });
+    it('debe mostrar true si la ruta dada es absoluta',  () => {
+        const result = validatePath(testAbsolutePath);
+        expect(result).toEqual(true);
+    });
 
-  it('debe mostrar false si la ruta dada no es absoluta',  () => {
-    const result = validatePath(testRelativePath);
-    expect(result).toEqual(false);
-  });  
+    it('debe mostrar false si la ruta dada no es absoluta',  () => {
+        const result = validatePath(testRelativePath);
+        expect(result).toEqual(false);
+    });  
 });
 
 // From Relative Path to Absolute Path 
 describe('Tests para validar si ruta relativa es convertida en absoluta', () => {
   
-  it('should be a function', () => {
-    expect(typeof toAbsolutePath).toBe('function');
-  });
+    it('should be a function', () => {
+        expect(typeof toAbsolutePath).toBe('function');
+    });
   
-  it('debe mostrar ruta absoluta si se le asigna la ruta relativa',  () => {
-    const result = toAbsolutePath(testRelativePath);
-    expect(result).toEqual(testAbsolutePath);
-  });  
+    it('debe mostrar ruta absoluta si se le asigna la ruta relativa',  () => {
+        const result = toAbsolutePath(testRelativePath);
+        expect(result).toEqual(testAbsolutePath);
+    });  
 });
 
 // Path Validation
 describe('Tests para validar si es ruta relativa  y si es, se convierta en absoluta', () => {
   
-  it('should be a function', () => {
-    expect(typeof pathValidation).toBe('function');
-  });
+    it('should be a function', () => {
+      expect(typeof pathValidation).toBe('function');
+    });
   
-  it('debe mostrar ruta absoluta si se le asigna la ruta absoluta',  () => {
-    const result = pathValidation(testAbsolutePath);
-    expect(result).toEqual(testAbsolutePath);
-  });  
-  it('debe mostrar ruta absoluta si se le asigna la ruta relativa',  () => {
-    const result = pathValidation(testRelativePath);
-    expect(result).toEqual(testAbsolutePath);
-  });
+    it('debe mostrar ruta absoluta si se le asigna la ruta absoluta',  () => {
+        const result = pathValidation(testAbsolutePath);
+        expect(result).toEqual(testAbsolutePath);
+    }); 
+
+    it('debe mostrar ruta absoluta si se le asigna la ruta relativa',  () => {
+        const result = pathValidation(testRelativePath);
+        expect(result).toEqual(testAbsolutePath);
+    });
 
 });
 
 // File Validation 
 describe('Tests para validar si ruta corresponde a archivo', () => {
 
-  it('should be a function', () => {
-    expect(typeof pathIsFile).toBe('function');
-  });
+    it('should be a function', () => {
+        expect(typeof pathIsFile).toBe('function');
+    });
   
-  it('debe mostrar true si la ruta corresponde a un archivo',  () => {
-    const result = pathIsFile(testAbsolutePath);
-    expect(result).toEqual(true);
-  });  
+    it('debe mostrar true si la ruta corresponde a un archivo',  () => {
+        const result = pathIsFile(testAbsolutePath);
+        expect(result).toEqual(true);
+    });  
 
-  it('debe mostrar false si la ruta no corresponde a un archivo',  () => {
-    const result = pathIsFile(testDirectoryPath);
-    expect(result).toEqual(false);
-  }); 
+    it('debe mostrar false si la ruta no corresponde a un archivo',  () => {
+        const result = pathIsFile(testDirectoryPath);
+        expect(result).toEqual(false);
+    }); 
 });
 
 // Directory Validation 
 describe('Tests para validar si ruta corresponde a directorio', () => {
 
-  it('should be a function', () => {
-    expect(typeof pathIsDirectory).toBe('function');
-  });
+    it('should be a function', () => {
+        expect(typeof pathIsDirectory).toBe('function');
+    });
   
-  it('debe mostrar true si la ruta corresponde a un directorio',  () => {
-    const result = pathIsDirectory(testDirectoryPath);
-    expect(result).toEqual(true);
-  });  
+    it('debe mostrar true si la ruta corresponde a un directorio',  () => {
+        const result = pathIsDirectory(testDirectoryPath);
+        expect(result).toEqual(true);
+    });  
 
-  it('debe mostrar false si la ruta no corresponde a un directorio',  () => {
-    const result = pathIsDirectory(testAbsolutePath);
-    expect(result).toEqual(false);
-  }); 
+    it('debe mostrar false si la ruta no corresponde a un directorio',  () => {
+        const result = pathIsDirectory(testAbsolutePath);
+        expect(result).toEqual(false);
+    }); 
 });
 
 // Looking for .md File
 describe('Tests para obtener la extension de un archivo', () => {
 
-  it('should be a function', () => {
-    expect(typeof mdFile).toBe('function');
-  });
+    it('should be a function', () => {
+        expect(typeof mdFile).toBe('function');
+    });
   
-  it('debe mostrar true si la ruta corresponde a un archivo md',  () => {
-    const result = mdFile(testRelativePath);
-    expect(result).toEqual(true);
-  });  
+    it('debe mostrar true si la ruta corresponde a un archivo md',  () => {
+        const result = mdFile(testRelativePath);
+        expect(result).toEqual(true);
+    });  
 
-  it('debe mostrar false si la ruta no corresponde a un archivo md',  () => {
-    const result = mdFile(testTxtPath);
-    expect(result).toEqual(false);
-  }); 
+    it('debe mostrar false si la ruta no corresponde a un archivo md',  () => {
+        const result = mdFile(testTxtPath);
+        expect(result).toEqual(false);
+    }); 
 });
 
 
 // Reading directory
 describe('Tests para obtener los archivos de un directorio', () => {
 
-  it('should be a function', () => {
-    expect(typeof directoryContent).toBe('function');
-  });
+    it('should be a function', () => {
+        expect(typeof directoryContent).toBe('function');
+    });
   
-  it('debe mostrar true si la ruta corresponde a un archivo md',  () => {
-    const result = directoryContent(testDirectoryPath);
-    expect(result).toEqual(insideDirectory);
-  });  
+    it('debe mostrar true si la ruta corresponde a un archivo md',  () => {
+        const result = directoryContent(testDirectoryPath);
+        expect(result).toEqual(insideDirectory);
+    });  
 });
 
 // Test promesas reading file y get links
@@ -176,15 +177,15 @@ describe('Tests para obtener el contenido del archivo', () => {
 // mdLinks function
 describe('mdLinks', () => {
 
-  it('should...', () => {
-    console.log('FIX ME!');
-  });
-  /* it('should be return a promise', () => {
-    expect(mdLinks()).toBe(typeof Promise);
-  }); */
-  it('should reject a promise when path does not exist', () => {
-    return(mdLinks('./noexuste.md')).catch((error) =>{
-    expect(error).toBe('La ruta no existe')
+    it('should...', () => {
+        console.log('FIX ME!');
     });
-  });
+    /* it('should be return a promise', () => {
+        expect(mdLinks()).toBe(typeof Promise);
+    }); */
+    it('should reject a promise when path does not exist', () => {
+        return(mdLinks('./noexuste.md')).catch((error) =>{
+            expect(error).toBe('La ruta no existe')
+        });
+    });
 });   
