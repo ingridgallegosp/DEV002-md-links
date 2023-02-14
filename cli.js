@@ -3,9 +3,12 @@
 const { mdLinks } = require('./index.js');
 
 mdLinks('./files/archive.md')
-    .then(()=>{
-        console.log()
+    .then((result)=>{
+        console.log(result)
     })
     .catch((error) => {
         console.log(error)
     });
+
+
+

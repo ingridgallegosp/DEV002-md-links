@@ -18,6 +18,25 @@ const resultFaq = 'Para que el módulo sea instalable desde GitHub solo tiene qu
 const testDirectoryPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto';
 const insideDirectory = ["archivos.md", "criteriosAceptacion", "objetivos", "opcionales.md"];
 //Some languages use \ as an 'escape' character with special meaning. To get a single literal \ in Windows you need to write \\ 
+const arrayPrueba = [
+    {
+        href: 'https://es.wikipedia.org/wiki/Markdown',
+        text: 'Markdown',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
+    },
+    {
+        href: 'https://es.wikipedia.org/wiki/Markdown',
+        text: 'Markdown',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+        ok: 'FAIL'
+    },
+    {
+        href: 'https://nodejs.org/',
+        text: 'Node.js',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
+    }
+]
+
 
 // File Existence Validation
 describe('Tests para validar si ruta existe', () => {

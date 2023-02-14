@@ -2,8 +2,8 @@
 const fs = require('fs'); 
 const path = require('path');
 const axios = require('axios');
-const open = require('node:fs/promises');
-const { resolve } = require('path');
+//const open = require('node:fs/promises');
+//const { resolve } = require('path');
 
 // const givenPath = './files/archive.md';
 // folderPath = './files';
@@ -116,7 +116,6 @@ const readingFile = (givenPath) => {
 
 // Looking for links in a .md file
 // .exec() method executes a search for a match in a specified string
-
 const regex = /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g;
 const getLinks = (givenPath) => { 
     return new Promise((resolve, reject) => {
@@ -129,7 +128,6 @@ const getLinks = (givenPath) => {
                         href: match[2],
                         text: match[1],
                         file: givenPath,
-                        // content: data
                     });
                     match = regex.exec(data);
                 }
@@ -147,29 +145,95 @@ const getLinks = (givenPath) => {
     }); */ // muestra los links
 
 // Ask (with fetch or axios) if href works
-const validateLinks = (url) => {
+/* // funcion documentacion
     axios.get(url)
         .then(response => {
             //console.log(response);
-            console.log(response.config.url);
             console.log('stats: ', response.status);
-            console.log('OK: ', response.statusText);
+            console.log('OK: ', response.statusText); 
         })
         .catch(error => {
-            //console.log(error);
-            console.log(error.config.url);
             console.log('stats: ', error.response.status);
             console.log('OK: ', error.response.statusText);
         });
+ */
+
+//valida link uno por uno--OK
+const validateLink = (url) => {
+    axios.get(url)
+        .then(response => {
+            const objResolve = {
+                //...links,
+                href: url,
+                status: response.status,
+                ok: response.statusText,
+            };
+            console.log(objResolve);
+        })
+        .catch(error => {
+            const objResolveFail = {
+                //...links,
+                href: url,
+                status: error.response.status,
+                ok: error.response.statusText,
+            };
+            console.log(objResolveFail);
+        });
 };
-// console.log(validateLinks('https://es.wikipedia.org/wiki/Markdown'));
+// console.log(validateLink('https://es.wikipedia.org/wiki/Markdown'));
 
-// valida link o array de links
-/* const validar = (links) => {
-    return new Promise((resolve, reject) =>{
+//valida array de links--OK
+const validateLinks = (links) => {
+    const arrLinksStatus = links.map((link) => {
+        axios.get(link)
+            .then(response => {
+                const objResolve = {
+                    // href: link,
+                    status: response.status,
+                    ok: response.statusText,
+                };
+                console.log(objResolve);
+            })
+            .catch(error => {
+                const objResolveFail = {
+                    // href: link,
+                    status: error.response.status,
+                    ok: 'FAIL'
+                    // ok: error.response.statusText,
+                };
+                console.log(objResolveFail);
+            });
+    });
+};
+// console.log(validateLinks(['https://es.wikipedia.org/wiki/Markdown', 'https://es.wikipedia.org/wiki/noexiste']));
 
-    })
-}; */
+
+// funcion prueba - valida link o array de links-- no funciona
+/* const url = 'https://es.wikipedia.org/wiki/Markdown';
+const requestAxios = axios.get(url);
+const validar = requestAxios.then((resolve) => {resolve.status}).catch((error) => error)
+validar.then(console.log)
+console.log(validar) //undefined */ 
+
+// --stats -- OK
+const statsLinks = (links) => {
+    const extraerElements = links.map((element) => element.href);//entro a array y obtengo los href  
+    const eliminarRepetidos = new Set (extraerElements) //elimina links repetidos
+    return {
+        total: extraerElements.length,
+        unique: eliminarRepetidos.size //new set es objeto
+    }
+};
+
+// --stats --validate -- OK
+const brokenLinks = (links) =>{
+    const brokenLinks = links.filter((element) => element.ok === 'FAIL');//filtro los que fallaron
+    return{
+        total:  links.length, 
+        unique: statsLinks(links).unique,
+        broken: brokenLinks.length
+    }
+}
 
 
 // Getting directory content - TESTEADO
@@ -189,6 +253,7 @@ module.exports = {
     getMdFileArray,
     getLinks,
     directoryContent,
-    validateLinks,
+    statsLinks,
+    brokenLinks
 };
   
