@@ -6,17 +6,25 @@ const {
     pathIsFile,
     pathIsDirectory,
     mdFile,
+    readingFile,
     getMdFileArray,
-    directoryContent } = require('../data.js');
+    getLinks,
+    directoryContent,
+    validateLink,
+    statsLinks,
+    brokenLinks } = require('../data.js');
 
-const testRelativePath = '../archivos.md';
-const testAbsolutePath = 'C:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\resumenProyecto\\archivos.md';
+const axios = require('axios');
+
+const testRelativePath = './files/archive.md';
+const testAbsolutePath = 'C:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md';
 const testFakePath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos22.md';
 const testTxtPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/text.txt';
 const testOnlyFaq = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/lecturaComplementaria/faq.md';
 const resultFaq = 'Para que el módulo sea instalable desde GitHub solo tiene que estar en un repo público de GitHub y contener un `package.json` válido';
 const testDirectoryPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto';
 const insideDirectory = ["archivos.md", "criteriosAceptacion", "objetivos", "opcionales.md"];
+const urlTest = 'https://es.wikipedia.org/wiki/Markdown';
 //Some languages use \ as an 'escape' character with special meaning. To get a single literal \ in Windows you need to write \\ 
 const arrayPrueba = [
     {
@@ -28,12 +36,12 @@ const arrayPrueba = [
         href: 'https://es.wikipedia.org/wiki/Markdown',
         text: 'Markdown',
         file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
-        ok: 'FAIL'
     },
     {
-        href: 'https://nodejs.org/',
+        href: 'https://nodejss.org/',
         text: 'Node.js',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+        ok: 'FAIL'
     }
 ]
 
@@ -160,6 +168,101 @@ describe('Tests para obtener la extension de un archivo', () => {
     }); 
 });
 
+// Array with .md files
+describe('Tests para filtrar md files en un array', () => {
+
+    it('should be a function', () => {
+        expect(typeof getMdFileArray).toBe('function');
+    });
+  
+    it('debe mostrar array con archivos md',  () => {
+        const result = getMdFileArray(testAbsolutePath);
+        expect(result).toEqual([testAbsolutePath]);
+    });  
+
+});
+
+// Reading Files
+describe('readingFile', () => {
+
+    it('should be a function', () => {
+        expect(typeof readingFile).toBe('function');
+    }); 
+
+    it('should return a promise', () => {
+        return readingFile(testAbsolutePath)
+            .then(() => {
+                expect(readingFile).toBe(typeof Promise);
+            }) 
+            .catch((error) => {error});
+    }); 
+});
+
+// Get Links
+describe('getLinks', () => {
+
+    it('should be a function', () => {
+        expect(typeof getLinks).toBe('function');
+    }); 
+
+    it('should return a promise', () => {
+        return getLinks(readingFile(testAbsolutePath))
+            .then(() => {
+                expect(getLinks).toBe(typeof Promise);
+            }) 
+            .catch((error) => {error});
+    }); 
+});
+
+// Validate Link
+jest.mock("axios");
+
+test("Link que funciona", () => {
+    axios.get.mockImplementation(() => Promise.resolve({ data: {status: 200, ok: 'OK'} }));
+});
+
+describe('validateLinks', () => {
+
+    it('should be a function', () => {
+        expect(typeof validateLink).toBe('function');
+    }); 
+
+    it('should return a promise', () => {
+        return validateLink(urlTest)
+            .then(() => {
+                expect(getLinks).toBe(typeof Promise);
+            }) 
+            .catch((error) => {error});
+    });
+
+});
+
+// --stats
+describe('Tests para obtener stats de links', () => {
+
+    it('should be a function', () => {
+        expect(typeof statsLinks).toBe('function');
+    });
+  
+    it('debe mostrar estadisticas de array',  () => {
+        const result = statsLinks(arrayPrueba);
+        expect(result).toEqual({"total": 3, "unique": 2});
+    });  
+});
+
+// --stats--validate
+describe('Tests para obtener stats y validate de links', () => {
+
+    it('should be a function', () => {
+        expect(typeof brokenLinks).toBe('function');
+    });
+  
+    it('debe mostrar estadisticas de array',  () => {
+        const result = brokenLinks(arrayPrueba);
+        expect(result).toEqual({"broken": 1, "total": 3, "unique": 2});
+    });  
+});
+
 // Reading directory
 describe('Tests para obtener los archivos de un directorio', () => {
 
@@ -172,4 +275,4 @@ describe('Tests para obtener los archivos de un directorio', () => {
         expect(result).toEqual(insideDirectory);
     });  
 });
-
+ 

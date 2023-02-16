@@ -5,37 +5,38 @@ const {
     pathValidation,
     getMdFileArray,
     getLinks,
+    validateLinks,
 } = require('./data.js');
 
-const mdLinks = (ruta, options) =>{
+const mdLinks = (givenPath, options) =>{
     return new Promise((resolve, reject)=>{
         //Evaluar si ruta existe
         // si la ruta existe:
-        if(verifyPathExists(ruta)){
+        if(verifyPathExists(givenPath)){
             //chequear si es ruta absoluta
             //cambiar de ruta relativa a absoluta
-            let rutaAb = pathValidation(ruta)
-            console.log(rutaAb)
+            let abPath = pathValidation(givenPath)
+            //console.log(abPath)
             //chequear si es archivo y si es archivo md //si es directorio filtrar .md-recursividad luego
-            if(getMdFileArray(rutaAb)){
-                let arrayWithMdFiles = getMdFileArray(rutaAb);
+            if(getMdFileArray(abPath)){
+                let arrayWithMdFiles = getMdFileArray(abPath);
                 // console.log(arrayWithMdFiles);
                 //si no hay archivos
                 if (!arrayWithMdFiles){
                     reject('No hay archivos extension .md')
-                } else if (arrayWithMdFiles || !options){
+                } else if (arrayWithMdFiles){
                     // for each md file: read and get links -- se puede usar .map o .forEach
                     let linksArray = arrayWithMdFiles.forEach((element) => { 
                         getLinks(element)
                             .then(links => {
                                 resolve(links);
-                                console.log(links)
+                                //console.log(links)
                             })
                             .catch((error) => {
                                 console.log(error)
                             });  
                     });
-                }
+                } 
             } 
         } else {
         // Si la ruta no existe, rechaza la promesa
@@ -43,13 +44,11 @@ const mdLinks = (ruta, options) =>{
         }
     });
 };
-  
 /* mdLinks('./files/archive.md')
     .then(()=>{
         console.log()
     })
     .catch((error) => {
         console.log(error)
-    }); */
-
+    }); */  
 module.exports = { mdLinks };

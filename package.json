@@ -28,8 +28,10 @@
   },
   "scripts": {
     "test": "jest --coverage"
-    
   },
+  "bin" : {
+    "execute" : "cli.js"
+} ,
   "rules": {
     "semi": [
       "error",

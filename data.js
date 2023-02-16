@@ -2,8 +2,6 @@
 const fs = require('fs'); 
 const path = require('path');
 const axios = require('axios');
-//const open = require('node:fs/promises');
-//const { resolve } = require('path');
 
 // const givenPath = './files/archive.md';
 // folderPath = './files';
@@ -36,7 +34,6 @@ const toAbsolutePath = (givenPath) => {
     return path.join(__dirname, givenPath);
 };
 // path.resolve
-//path.resolve('../', '/../', '../')
 // '/home' on Linux
 // 'C:\\Users' on Windows
 
@@ -73,7 +70,7 @@ const mdFile = (givenPath) => {
     }
 };
 
-// Array with .md files
+// Array with .md files - TESTEADO
 const getMdFileArray = (givenPath) => {
     let files = [];
     if (pathIsFile(givenPath) && mdFile(givenPath)) {
@@ -145,8 +142,8 @@ const getLinks = (givenPath) => {
     }); */ // muestra los links
 
 // Ask (with fetch or axios) if href works
-/* // funcion documentacion
-    axios.get(url)
+// funcion documentacion
+/*  axios.get(url)
         .then(response => {
             //console.log(response);
             console.log('stats: ', response.status);
@@ -164,7 +161,7 @@ const validateLink = (url) => {
         .then(response => {
             const objResolve = {
                 //...links,
-                href: url,
+                //href: url,
                 status: response.status,
                 ok: response.statusText,
             };
@@ -173,22 +170,22 @@ const validateLink = (url) => {
         .catch(error => {
             const objResolveFail = {
                 //...links,
-                href: url,
+                //href: url,
                 status: error.response.status,
                 ok: error.response.statusText,
             };
             console.log(objResolveFail);
         });
 };
-// console.log(validateLink('https://es.wikipedia.org/wiki/Markdown'));
+console.log(validateLink('https://es.wikipedia.org/wiki/Markdown'));
 
-//valida array de links--OK
-const validateLinks = (links) => {
+//valida array de links
+/* const validateLinks = (links) => {
     const arrLinksStatus = links.map((link) => {
-        axios.get(link)
+        axios.get(link) //link.href
             .then(response => {
                 const objResolve = {
-                    // href: link,
+                    ...links, 
                     status: response.status,
                     ok: response.statusText,
                 };
@@ -196,7 +193,7 @@ const validateLinks = (links) => {
             })
             .catch(error => {
                 const objResolveFail = {
-                    // href: link,
+                    ...links,
                     status: error.response.status,
                     ok: 'FAIL'
                     // ok: error.response.statusText,
@@ -204,8 +201,8 @@ const validateLinks = (links) => {
                 console.log(objResolveFail);
             });
     });
-};
-// console.log(validateLinks(['https://es.wikipedia.org/wiki/Markdown', 'https://es.wikipedia.org/wiki/noexiste']));
+}; */
+//console.log(validateLinks(['https://es.wikipedia.org/wiki/Markdown', 'https://es.wikipedia.org/wiki/noexiste']));
 
 
 // funcion prueba - valida link o array de links-- no funciona
@@ -215,17 +212,17 @@ const validar = requestAxios.then((resolve) => {resolve.status}).catch((error) =
 validar.then(console.log)
 console.log(validar) //undefined */ 
 
-// --stats -- OK
+// --stats - TESTEADO
 const statsLinks = (links) => {
     const extraerElements = links.map((element) => element.href);//entro a array y obtengo los href  
     const eliminarRepetidos = new Set (extraerElements) //elimina links repetidos
     return {
-        total: extraerElements.length,
+        total: links.length,
         unique: eliminarRepetidos.size //new set es objeto
     }
 };
 
-// --stats --validate -- OK
+// --stats --validate - TESTEADO
 const brokenLinks = (links) =>{
     const brokenLinks = links.filter((element) => element.ok === 'FAIL');//filtro los que fallaron
     return{
@@ -253,6 +250,7 @@ module.exports = {
     getMdFileArray,
     getLinks,
     directoryContent,
+    validateLink,
     statsLinks,
     brokenLinks
 };
