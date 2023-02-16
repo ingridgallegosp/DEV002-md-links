@@ -11,20 +11,30 @@ const options = process.argv[3];
 
 mdLinks(path, options)
     .then((result)=>{
-        if (!options || options === null || options === undefined || options === { validate: false }) {
-            console.log(result);
-        } else if (options === '--validate' || options == { validate: true }){ // ojo con {validate}--no funciona
-            console.log(validateLinks(result)); 
+        if (!options || options === null || options === undefined) {
+            console.log(result)
+            
+        } else if (options === '--validate'){ 
+            console.log('acaaaaaaa', validateLinks(result)); 
+            
         } else if (options === '--stats'){
             console.log(statsLinks(result));
+            //return statsLinks(result)
+
         } else if (options === '--stats--validate'){
             console.log(brokenLinks(result));
+            //return brokenLinks(result)
         } 
     })
     .catch((error) => {
         console.log(error)
     });
     
+
+
+
+    
+
 // Para testear - antes de incluir validaciones
 /* mdLinks(path, options)
     .then((result)=>{

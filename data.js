@@ -157,7 +157,7 @@ const getLinks = (givenPath) => {
  */
 
 //valida link uno por uno--OK
-const validateLink = (url) => {
+/* const validateLink = (url) => {
     axios.get(url)
         .then(response => {
             const objResolve = {
@@ -176,52 +176,60 @@ const validateLink = (url) => {
             };
             console.log(objResolveFail);
         });
-}; 
+};  */
 //console.log(validateLink('https://nodejs.org/0'));
 
 //valida array de links
+
 const validateLinks = (linksArray) => {
     const arrLinksStatus = linksArray.map((element) => {
         axios.get(element.href) //link.href
             .then(response => {
                 const objResolve = {
                     ...element,
-                    status: response.status,
-                    ok: response.statusText,
+                    statusCode: response.status,
+                    msg: response.statusText,
                 };
                 console.log(objResolve);
             })
             .catch(error => {
                 const objResolveFail = {
                     ...element,
-                    status: error.response.status,
-                    ok: 'FAIL'
+                    statusCode: error.response.status,
+                    msg: 'FAIL'
                     // ok: error.response.statusText,
                 };
                 console.log(objResolveFail);
             });
     });
 }; 
+const validateLinksPromise = (linksArray) => {
+    return new Promise((resolve, reject) => {
+        const arrLinksStatus = linksArray.map((element) => {
+            axios.get(element.href) //link.href
+                .then(response => {
+                    const objResolve = {
+                        ...element,
+                        statusCode: response.status,
+                        msg: response.statusText,
+                    };
+                    console.log(objResolve);
+                })
+                .catch(error => {
+                    const objResolveFail = {
+                        ...element,
+                        statusCode: error.response.status,
+                        msg: 'FAIL'
+                        // ok: error.response.statusText,
+                    };
+                    console.log(objResolveFail);
+                });
+        });
+        resolve 
+    })
+    
+}; 
 
-const arrayPrueba = [
-    {
-        href: 'https://es.wikipedia.org/wiki/Markdown',
-        text: 'Markdown',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
-    },
-    {
-        href: 'https://es.wikipedia.org/wiki/Markdown',
-        text: 'Markdown',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
-    },
-    {
-        href: 'https://nodejs.org/0',
-        text: 'Node.js',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
-    }
-]
-
-//console.log(validateLinks(arrayPrueba));
 
 // funcion prueba - valida link o array de links-- no funciona
 /* const url = 'https://es.wikipedia.org/wiki/Markdown';
@@ -231,21 +239,23 @@ validar.then(console.log)
 console.log(validar) //undefined */ 
 
 // --stats - TESTEADO
-const statsLinks = (links) => {
-    const extraerElements = links.map((element) => element.href);//entro a array y obtengo los href  
+const statsLinks = (arrayObj) => {
+    const extraerElements = arrayObj.map((element) => element.href);//entro a array y obtengo los href  
     const eliminarRepetidos = new Set (extraerElements) //elimina links repetidos
     return {
-        total: links.length,
+        total: arrayObj.length,
         unique: eliminarRepetidos.size //new set es objeto
     }
 };
 
 // --stats --validate - TESTEADO
-const brokenLinks = (links) =>{
-    const brokenLinks = links.filter((element) => element.ok === 'FAIL');//filtro los que fallaron
+const brokenLinks = (arrayObj) =>{
+    const extraerElements = arrayObj.map((element) => element.href);//entro a array y obtengo los href  
+    const eliminarRepetidos = new Set (extraerElements); //elimina links repetidos
+    const brokenLinks = arrayObj.filter((element) => element.statusCode >= '400');//filtro los que fallaron
     return{
-        total:  links.length, 
-        unique: statsLinks(links).unique,
+        total:  arrayObj.length, 
+        unique: eliminarRepetidos.size,
         broken: brokenLinks.length
     }
 }

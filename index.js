@@ -35,10 +35,10 @@ const mdLinks = (givenPath, options) =>{
                                 }
                             })
                             .catch((error) => {
-                                console.log(error)
-                            });  
+                                //console.log(error)
+                            });   
                     });
-                } 
+                }  
             } 
         } else {
         // Si la ruta no existe, rechaza la promesa
@@ -46,11 +46,15 @@ const mdLinks = (givenPath, options) =>{
         }
     });
 };
+
 /* mdLinks('./files/archive.md')
-    .then(()=>{
-        console.log()
+    .then((response)=>{
+        console.log(response)
     })
     .catch((error) => {
         console.log(error)
-    }); */  
+    });  */  //pending  
+
+//.log(mdLinks('./files/archive.md'))//pending
+
 module.exports = { mdLinks };
