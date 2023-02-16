@@ -13,14 +13,14 @@ mdLinks(path, options)
     .then((result)=>{
         if (!options){
             console.log(result);
-        } else if (options === '--validate'){
+        } else if (options === { validate: false }){
             console.log(result);
-            console.log(result.map((element) => validateLink(element.href)));
+        } else if (options === '--validate' || options === { validate: true }){ // no muestra links
+            console.log(result);
+            console.log(result.map((element) => validateLink(element.href))); //ojooo
         } else if (options === '--stats'){
-            console.log(result);
             console.log(statsLinks(result));
         } else if (options === '--stats--validate'){
-            console.log(result);
             console.log(brokenLinks(result));
         } 
     })

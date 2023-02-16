@@ -38,9 +38,10 @@ const arrayPrueba = [
         file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
     },
     {
-        href: 'https://nodejss.org/',
+        href: 'https://nodejs.org/0',
         text: 'Node.js',
         file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+        status: '404',
         ok: 'FAIL'
     }
 ]

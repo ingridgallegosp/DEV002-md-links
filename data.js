@@ -160,32 +160,29 @@ const validateLink = (url) => {
     axios.get(url)
         .then(response => {
             const objResolve = {
-                //...links,
-                //href: url,
                 status: response.status,
                 ok: response.statusText,
             };
             console.log(objResolve);
         })
         .catch(error => {
+            //console.log(error)
             const objResolveFail = {
-                //...links,
-                //href: url,
                 status: error.response.status,
-                ok: error.response.statusText,
+                ok: 'FAIL',
             };
             console.log(objResolveFail);
         });
 };
-console.log(validateLink('https://es.wikipedia.org/wiki/Markdown'));
+//console.log(validateLink('https://nodejs.org/0'));
 
 //valida array de links
-/* const validateLinks = (links) => {
-    const arrLinksStatus = links.map((link) => {
-        axios.get(link) //link.href
+const validateLinks = (linksArray) => {
+    const arrLinksStatus = linksArray.map((element) => {
+        axios.get(element.href) //link.href
             .then(response => {
                 const objResolve = {
-                    ...links, 
+                    ...element,
                     status: response.status,
                     ok: response.statusText,
                 };
@@ -193,7 +190,7 @@ console.log(validateLink('https://es.wikipedia.org/wiki/Markdown'));
             })
             .catch(error => {
                 const objResolveFail = {
-                    ...links,
+                    ...element,
                     status: error.response.status,
                     ok: 'FAIL'
                     // ok: error.response.statusText,
@@ -201,9 +198,27 @@ console.log(validateLink('https://es.wikipedia.org/wiki/Markdown'));
                 console.log(objResolveFail);
             });
     });
-}; */
-//console.log(validateLinks(['https://es.wikipedia.org/wiki/Markdown', 'https://es.wikipedia.org/wiki/noexiste']));
+}; 
 
+const arrayPrueba = [
+    {
+        href: 'https://es.wikipedia.org/wiki/Markdown',
+        text: 'Markdown',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
+    },
+    {
+        href: 'https://es.wikipedia.org/wiki/Markdown',
+        text: 'Markdown',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+    },
+    {
+        href: 'https://nodejs.org/0',
+        text: 'Node.js',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+    }
+]
+
+console.log(validateLinks(arrayPrueba));
 
 // funcion prueba - valida link o array de links-- no funciona
 /* const url = 'https://es.wikipedia.org/wiki/Markdown';
@@ -250,7 +265,7 @@ module.exports = {
     getMdFileArray,
     getLinks,
     directoryContent,
-    validateLink,
+    //validateLink,
     statsLinks,
     brokenLinks
 };
