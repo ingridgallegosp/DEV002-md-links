@@ -28,7 +28,6 @@ mdLinks(path, options)
         console.log(error)
     });
     
-    
 // Para testear - antes de incluir validaciones
 /* mdLinks(path, options)
     .then((result)=>{
