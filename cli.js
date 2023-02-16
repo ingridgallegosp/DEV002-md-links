@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { mdLinks } = require('./index.js');
-const { validateLink,  statsLinks, brokenLinks } = require('./data.js');
+const { validateLinks,  statsLinks, brokenLinks } = require('./data.js');
 
 const process = require('process');
 const path = process.argv[2];
@@ -11,13 +11,10 @@ const options = process.argv[3];
 
 mdLinks(path, options)
     .then((result)=>{
-        if (!options){
+        if (!options || options === null || options === undefined || options === { validate: false }) {
             console.log(result);
-        } else if (options === { validate: false }){
-            console.log(result);
-        } else if (options === '--validate' || options === { validate: true }){ // no muestra links
-            console.log(result);
-            console.log(result.map((element) => validateLink(element.href))); //ojooo
+        } else if (options === '--validate' || options == { validate: true }){ // ojo con {validate}--no funciona
+            console.log(validateLinks(result)); 
         } else if (options === '--stats'){
             console.log(statsLinks(result));
         } else if (options === '--stats--validate'){

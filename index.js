@@ -5,7 +5,6 @@ const {
     pathValidation,
     getMdFileArray,
     getLinks,
-    validateLinks,
 } = require('./data.js');
 
 const mdLinks = (givenPath, options) =>{
@@ -22,7 +21,7 @@ const mdLinks = (givenPath, options) =>{
                 let arrayWithMdFiles = getMdFileArray(abPath);
                 // console.log(arrayWithMdFiles);
                 //si no hay archivos
-                if (!arrayWithMdFiles){
+                if (!arrayWithMdFiles || arrayWithMdFiles.length === ''){
                     reject('No hay archivos extension .md')
                 } else if (arrayWithMdFiles){
                     // for each md file: read and get links -- se puede usar .map o .forEach
@@ -31,6 +30,9 @@ const mdLinks = (givenPath, options) =>{
                             .then(links => {
                                 resolve(links);
                                 //console.log(links)
+                                if(links.length===0){
+                                    console.log('No contiene links')
+                                }
                             })
                             .catch((error) => {
                                 console.log(error)

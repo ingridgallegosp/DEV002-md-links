@@ -96,6 +96,7 @@ const readingFile = (givenPath) => {
     return new Promise((resolve, reject) => {
         fs.readFile(givenPath, 'utf8', (error, data) => {
             if (error) {
+                console.log(error)
                 reject(error)
             } else {
                 resolve(data);
@@ -160,6 +161,7 @@ const validateLink = (url) => {
     axios.get(url)
         .then(response => {
             const objResolve = {
+                //...element,
                 status: response.status,
                 ok: response.statusText,
             };
@@ -168,12 +170,13 @@ const validateLink = (url) => {
         .catch(error => {
             //console.log(error)
             const objResolveFail = {
+                //...element,
                 status: error.response.status,
                 ok: 'FAIL',
             };
             console.log(objResolveFail);
         });
-};
+}; 
 //console.log(validateLink('https://nodejs.org/0'));
 
 //valida array de links
@@ -218,7 +221,7 @@ const arrayPrueba = [
     }
 ]
 
-console.log(validateLinks(arrayPrueba));
+//console.log(validateLinks(arrayPrueba));
 
 // funcion prueba - valida link o array de links-- no funciona
 /* const url = 'https://es.wikipedia.org/wiki/Markdown';
@@ -265,7 +268,7 @@ module.exports = {
     getMdFileArray,
     getLinks,
     directoryContent,
-    //validateLink,
+    validateLinks,
     statsLinks,
     brokenLinks
 };

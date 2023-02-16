@@ -1,15 +1,55 @@
 # Markdown Links
 
+![mdlinks](./link.png)
+
 ## Índice
 
-* [1. Preámbulo](#1-preámbulo)
+* [1. Introducción](#1-introducción)
 * [2. Resumen del proyecto](#2-resumen-del-proyecto)
 * [3. Diagrama de flujo](#3-objetivos-de-aprendizaje)
-
-
+* [4. Instalación](#4-instalación)
+* [5. Modo de Ejecución](#5-ejecución)
 
 ***
+## 1. Introducción
 
+Markdown es un lenguaje de marcado ligero muy popular entre developers. Es usado en muchísimas plataformas que manejan texto plano (GitHub, foros, blogs, ...) y es muy común encontrar varios archivos en ese formato en cualquier tipo de repositorio (empezando por el tradicional README.md).
+
+Estos archivos Markdown normalmente contienen links (vínculos/ligas) que muchas veces están rotos o ya no son válidos y eso perjudica mucho el valor de la información que se quiere compartir.
+
+Dentro de una comunidad de código abierto, nos han propuesto crear una herramienta usando Node.js, que lea y analice archivos en formato Markdown, para verificar los links que contengan y reportar algunas estadísticas.
+
+ 
+## 2. Resumen del Proyecto
+
+Esta es una herramienta de línea de comando (CLI) y librería instalable que facilita la búsqueda y análisis de enlaces dentro de archivos markdown (extensión .md).
+
+
+
+## 3. Diagrama de Flujo
+
+![diagrama-de-flujo](./link.png)
+
+## 4. Instalación
+
+## 5. Funcionalidad
+
+### Este proyecto consta de DOS partes
+
+### 1) JavaScript API
+
+El módulo ofrece lasiguiente interfaz:
+
+#### `mdLinks(path, options)`
+
+##### Argumentos
+
+* `path`: Ruta **absoluta** o **relativa** al **archivo** o **directorio**.
+Si la ruta pasada es relativa, debe resolverse como relativa al directorio
+desde donde se invoca node - _current working directory_).
+* `options`: Un objeto con **únicamente** la siguiente propiedad:
+  - `validate`: Booleano que determina si se desea validar los links
+    encontrados.
 
 ##### Valor de retorno
 
@@ -57,7 +97,7 @@ mdLinks("./some/dir")
 
 ### 2) CLI (Command Line Interface - Interfaz de Línea de Comando)
 
-El ejecutable de nuestra aplicación debe poder ejecutarse de la siguiente
+El ejecutable de nuestra aplicación se ejecuta de la siguiente 
 manera a través de la **terminal**:
 
 `md-links <path-to-file> [options]`
@@ -71,7 +111,7 @@ $ md-links ./some/example.md
 ./some/example.md http://google.com/ Google
 ```
 
-El comportamiento por defecto no debe validar si las URLs responden ok o no,
+El comportamiento por defecto no debe valida si las URLs responden ok o no,
 solo debe identificar el archivo markdown (a partir de la ruta que recibe como
 argumento), analizar el archivo Markdown e imprimir los links que vaya
 encontrando, junto con la ruta del archivo donde aparece y el texto
