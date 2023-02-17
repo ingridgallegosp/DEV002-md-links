@@ -4,9 +4,8 @@ const path = require('path');
 const axios = require('axios');
 
 // const givenPath = './files/archive.md';
-// folderPath = './files';
+const folderPath = './files/resumenProyecto/objetivos';
 // const rutaPrueba = './files/archive.md';
-
 // Options Validation
 // falta
 // fs.access
@@ -53,12 +52,6 @@ const pathValidation = (givenPath) => {
 const pathIsFile = (givenPath) => {
     const stats = fs.statSync(givenPath);
     return stats.isFile();
-};
-
-// Directory Validation - TESTEADO
-const pathIsDirectory = (givenPath) => {
-    const stats = fs.statSync(givenPath);
-    return stats.isDirectory();
 };
 
 // Looking for .md File with file extension path.extname(path) - TESTEADO 
@@ -241,8 +234,7 @@ const validateLinks = (linksArray) => {
         }
     });
     return validateLinksPromise;
-}
-// promise pending
+}// promise pending
 
 
 // funcion prueba - valida link o array de links-- no funciona
@@ -262,25 +254,6 @@ const statsLinks = (arrayObj) => {
     }
 };
 
-
-const arrayObj = [
-    {
-        href: 'https://es.wikipedia.org/wiki/Markdown',
-        text: 'Markdown',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
-    },
-    {
-        href: 'https://es.wikipedia.org/wiki/Markdowns',
-        text: 'Markdown',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
-    },
-    {
-        href: 'https://nodejs.org',
-        text: 'Node.js',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
-    }
-]
-
 // --stats --validate - TESTEADO
 const brokenLinks = (arrayObj) =>{
     const extraerElements = arrayObj.map((element) => element.href);//entro a array y obtengo los href  
@@ -294,9 +267,60 @@ const brokenLinks = (arrayObj) =>{
     } 
 };
 
+// Directory Validation - TESTEADO
+const pathIsDirectory = (givenPath) => {
+    const stats = fs.statSync(givenPath);
+    return stats.isDirectory();
+};
+
 // Getting directory content - TESTEADO
-const directoryContent =(folderPath) => fs.readdirSync(folderPath);
+const directoryContent = (folderPath) => fs.readdirSync(folderPath);
 //console.log(directoryContent)
+
+function readDirectory(dir) {
+    let allFiles = [];
+    fs.readdirSync(dir).forEach(fileName => {
+        const filePath = path.join(dir, fileName);
+        const fileStat = fs.statSync(filePath);
+
+        if (fileStat.isFile()) {
+            allFiles.push(filePath)
+        } else if (fileStat.isDirectory()) {
+            let savePaths = readDirectory(filePath);
+            //const files = allFiles.concat(savePaths)
+            allFiles.push(...savePaths)
+        }
+    });
+    return allFiles;
+}
+console.log(readDirectory('./files'))
+
+/* const recursiva = (givenPath) =>{
+    console.log(givenPath)
+    let allFiles = [];
+    //si es directorio 
+    if (pathIsDirectory(givenPath)){
+        //guardo contenido de directorio
+        const arrayP = directoryContent(givenPath)
+        console.log('contenido directorio',arrayP)
+        arrayP.map((element) => {
+            //convertir a ruta absoluta
+            const internalPaths = pathValidation(element)
+            console
+
+            console.log('internal paths', internalPaths)
+            // validar si archivo o directorio
+            const savePaths = recursiva(internalPaths);
+            const files = allFiles.concat(savePaths)
+            allFiles.push(files)
+        })
+    // si es archivo
+    } else if (pathIsFile(givenPath) && mdFile(givenPath)){
+        allFiles.push(givenPath);
+    } 
+    return allFiles;
+} */
+
 
 
 module.exports = { 

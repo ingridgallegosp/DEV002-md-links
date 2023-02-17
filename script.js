@@ -2,7 +2,7 @@
 const process = require('process');
 console.log(process.argv);
 
-//Pass arguments to node app: node script.js './files/archive.md' validate estat
+//Pass arguments to node app: node script.js './files/archive.md' validate stat
 const proc0 = process.argv[0];
 console.log(proc0); //C:\Program Files\nodejs\node.exe
 const proc1 = process.argv[1];
@@ -12,4 +12,4 @@ console.log(path); //./files/archive.md
 const options = process.argv[3];
 console.log(options); //validate
 const options2 = process.argv[4];
-console.log(options2); //validate
+console.log(options2); //stats

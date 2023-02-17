@@ -31,9 +31,6 @@ const mdlinksPromise = mdLinks(path, options, options2)
 mdlinksPromise.then(console.log)
 
 
-
-    
-
 // Para testear - antes de incluir validaciones
 /* mdLinks(path, options)
     .then((result)=>{
