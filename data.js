@@ -181,55 +181,86 @@ const getLinks = (givenPath) => {
 
 //valida array de links
 
-const validateLinks = (linksArray) => {
+/* const validateLinks = (linksArray) => {
     const arrLinksStatus = linksArray.map((element) => {
         axios.get(element.href) //link.href
             .then(response => {
-                const objResolve = {
+                return{
                     ...element,
                     statusCode: response.status,
                     msg: response.statusText,
                 };
-                console.log(objResolve);
+                //console.log(objResolve);
             })
             .catch(error => {
-                const objResolveFail = {
+                return  {
                     ...element,
                     statusCode: error.response.status,
                     msg: 'FAIL'
                     // ok: error.response.statusText,
                 };
-                console.log(objResolveFail);
+                //console.log(objResolveFail);
             });
     });
-}; 
-const validateLinksPromise = (linksArray) => {
-    return new Promise((resolve, reject) => {
+}; // undefined  */
+const validateLinks = (linksArray) => {
+    const validateLinksPromise = new Promise((resolve, reject) => {
         const arrLinksStatus = linksArray.map((element) => {
-            axios.get(element.href) //link.href
+            return axios
+                .get(element.href) //link.href
                 .then(response => {
-                    const objResolve = {
+                    return {
                         ...element,
                         statusCode: response.status,
                         msg: response.statusText,
                     };
-                    console.log(objResolve);
+                    //console.log(objResolve);
                 })
                 .catch(error => {
-                    const objResolveFail = {
+                    return {
                         ...element,
                         statusCode: error.response.status,
                         msg: 'FAIL'
                         // ok: error.response.statusText,
                     };
-                    console.log(objResolveFail);
                 });
         });
-        resolve 
-    })
-    
-}; 
-
+        if (arrLinksStatus) {
+            const linksObjects = Promise.allSettled(arrLinksStatus).then((linksArray) =>
+                linksArray.map((element) => {
+                    return {
+                        href: element.value.href,
+                        text: element.value.text,
+                        file: element.value.file,
+                        statusCode: element.value.statusCode,
+                        msg:element.value.msg
+                    };
+                })
+            );
+            resolve(linksObjects);
+        }
+    });
+    return validateLinksPromise;
+}
+// promise pending
+const arrayPrueba = [
+    {
+        href: 'https://es.wikipedia.org/wiki/Markdown',
+        text: 'Markdown',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
+    },
+    {
+        href: 'https://es.wikipedia.org/wiki/Markdowns',
+        text: 'Markdown',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+    },
+    {
+        href: 'https://nodejs.org',
+        text: 'Node.js',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+    }
+]
+console.log(validateLinks(arrayPrueba))
 
 // funcion prueba - valida link o array de links-- no funciona
 /* const url = 'https://es.wikipedia.org/wiki/Markdown';
