@@ -243,24 +243,7 @@ const validateLinks = (linksArray) => {
     return validateLinksPromise;
 }
 // promise pending
-const arrayPrueba = [
-    {
-        href: 'https://es.wikipedia.org/wiki/Markdown',
-        text: 'Markdown',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
-    },
-    {
-        href: 'https://es.wikipedia.org/wiki/Markdowns',
-        text: 'Markdown',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
-    },
-    {
-        href: 'https://nodejs.org',
-        text: 'Node.js',
-        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
-    }
-]
-console.log(validateLinks(arrayPrueba))
+
 
 // funcion prueba - valida link o array de links-- no funciona
 /* const url = 'https://es.wikipedia.org/wiki/Markdown';
