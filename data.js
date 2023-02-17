@@ -279,8 +279,9 @@ const directoryContent = (folderPath) => fs.readdirSync(folderPath);
 
 function readDirectory(dir) {
     let allFiles = [];
-    fs.readdirSync(dir).forEach(fileName => {
-        const filePath = path.join(dir, fileName);
+    const absolutePath = path.resolve(dir);
+    fs.readdirSync(absolutePath).forEach(fileName => {
+        const filePath = path.join(absolutePath, fileName);
         const fileStat = fs.statSync(filePath);
 
         if (fileStat.isFile()) {
@@ -293,7 +294,8 @@ function readDirectory(dir) {
     });
     return allFiles;
 }
-console.log(readDirectory('./files'))
+//console.log(readDirectory('./files/'))
+
 
 /* const recursiva = (givenPath) =>{
     console.log(givenPath)
@@ -334,8 +336,9 @@ module.exports = {
     readingFile,
     getMdFileArray,
     getLinks,
-    directoryContent,
     validateLinks,
     statsLinks,
     brokenLinks,
+    directoryContent,
+    readDirectory
 };  

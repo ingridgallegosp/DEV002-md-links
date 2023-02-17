@@ -5,9 +5,7 @@ const {
     pathValidation,
     getMdFileArray,
     getLinks,
-    pathIsDirectory,
-    directoryContent,
-} = require('./data.js');
+    readDirectory} = require('./data.js');
 
 const mdLinks = (givenPath, options) =>{
     return new Promise((resolve, reject)=>{
@@ -18,13 +16,6 @@ const mdLinks = (givenPath, options) =>{
             //cambiar de ruta relativa a absoluta
             let abPath = pathValidation(givenPath)
             //console.log(abPath)
-            //si es directorio filtrar .md-recursividad
-            if (pathIsDirectory(abPath)){
-                const content = directoryContent(abPath)
-                console.log(content)//aca recurisvidad
-                
-        
-            }
             //chequear si es archivo y si es archivo md 
             if(getMdFileArray(abPath)){
                 let arrayWithMdFiles = getMdFileArray(abPath);
@@ -48,7 +39,13 @@ const mdLinks = (givenPath, options) =>{
                             });   
                     });
                 }  
-            } 
+            } else {
+                //si no es archivo entonces es directorio
+                if(readDirectory(givenPath)){
+                    let arrayWithMdFiles = readDirectory(givenPath);
+                    return arrayWithMdFiles
+                }
+            }  
         } else {
         // Si la ruta no existe, rechaza la promesa
             reject('La ruta no existe');
