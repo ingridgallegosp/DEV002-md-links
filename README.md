@@ -38,14 +38,14 @@ Esta es una herramienta de línea de comando (CLI) y librería instalable que fa
 
 ### 1) JavaScript API
 
-El módulo ofrece lasiguiente interfaz:
+El módulo ofrece la siguiente interfaz:
 
 #### `mdLinks(path, options)`
 
 ##### Argumentos
 
 * `path`: Ruta **absoluta** o **relativa** al **archivo** o **directorio**.
-Si la ruta pasada es relativa, debe resolverse como relativa al directorio
+Si la ruta pasada es relativa, se resuelve como relativa al directorio
 desde donde se invoca node - _current working directory_).
 * `options`: Un objeto con **únicamente** la siguiente propiedad:
   - `validate`: Booleano que determina si se desea validar los links
@@ -148,7 +148,7 @@ $ md-links ./some/example.md --stats
 Total: 3
 Unique: 3
 ```
-
+##### `--stats--validate`
 También podemos combinar `--stats` y `--validate` para obtener estadísticas que
 necesiten de los resultados de la validación.
 

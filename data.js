@@ -262,18 +262,37 @@ const statsLinks = (arrayObj) => {
     }
 };
 
+
+const arrayObj = [
+    {
+        href: 'https://es.wikipedia.org/wiki/Markdown',
+        text: 'Markdown',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md'
+    },
+    {
+        href: 'https://es.wikipedia.org/wiki/Markdowns',
+        text: 'Markdown',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+    },
+    {
+        href: 'https://nodejs.org',
+        text: 'Node.js',
+        file: 'c:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md',
+    }
+]
+
 // --stats --validate - TESTEADO
 const brokenLinks = (arrayObj) =>{
     const extraerElements = arrayObj.map((element) => element.href);//entro a array y obtengo los href  
     const eliminarRepetidos = new Set (extraerElements); //elimina links repetidos
+    //validar arrayObj
     const brokenLinks = arrayObj.filter((element) => element.statusCode >= '400');//filtro los que fallaron
     return{
         total:  arrayObj.length, 
         unique: eliminarRepetidos.size,
-        broken: brokenLinks.length
-    }
-}
-
+        broken: brokenLinks.length,
+    } 
+};
 
 // Getting directory content - TESTEADO
 const directoryContent =(folderPath) => fs.readdirSync(folderPath);
@@ -294,6 +313,5 @@ module.exports = {
     directoryContent,
     validateLinks,
     statsLinks,
-    brokenLinks
-};
-  
+    brokenLinks,
+};  

@@ -5,6 +5,8 @@ const {
     pathValidation,
     getMdFileArray,
     getLinks,
+    pathIsDirectory,
+    directoryContent,
 } = require('./data.js');
 
 const mdLinks = (givenPath, options) =>{
@@ -16,7 +18,14 @@ const mdLinks = (givenPath, options) =>{
             //cambiar de ruta relativa a absoluta
             let abPath = pathValidation(givenPath)
             //console.log(abPath)
-            //chequear si es archivo y si es archivo md //si es directorio filtrar .md-recursividad luego
+            //si es directorio filtrar .md-recursividad
+            if (pathIsDirectory(abPath)){
+                const content = directoryContent(abPath)
+                console.log(content)//aca recurisvidad
+                
+        
+            }
+            //chequear si es archivo y si es archivo md 
             if(getMdFileArray(abPath)){
                 let arrayWithMdFiles = getMdFileArray(abPath);
                 // console.log(arrayWithMdFiles);
