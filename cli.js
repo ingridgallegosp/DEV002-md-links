@@ -9,7 +9,6 @@ const options = process.argv[3];
 const options2 = process.argv[4];
 
 //Pass arguments to node app: node cli.js './files/archive.md' --validate
-
 const mdlinksPromise = mdLinks(path, options, options2)
     .then((result)=>{
         if (!options || options === null || options === undefined) {
@@ -18,9 +17,7 @@ const mdlinksPromise = mdLinks(path, options, options2)
             return validateLinks(result);
         } else if (options === '--stats' && !options2){
             return statsLinks(result);
-        // } else if (options === '--stats--validate'){
         } else if (options === '--stats' && options2 === '--validate'){
-
             return validateLinks(result).then((result) => brokenLinks(result));
         } 
     })
@@ -29,7 +26,6 @@ const mdlinksPromise = mdLinks(path, options, options2)
     });
    
 mdlinksPromise.then(console.log)
-
 
 // Para testear - antes de incluir validaciones
 /* mdLinks(path, options)

@@ -44,9 +44,10 @@ const mdLinks = (givenPath, options) =>{
                 if (!arrayWithMdFilesDir || arrayWithMdFilesDir.length === ''){
                     reject('No hay archivos extension .md')
                 } else if (arrayWithMdFilesDir){
-                    console.log(arrayWithMdFilesDir)
+                    //console.log(arrayWithMdFilesDir)
                     // for each md file: read and get links
-                    arrayWithMdFilesDir.map((element) => { 
+                    
+                    arrayWithMdFilesDir.forEach((element) => { 
                         getLinks(element)
                             .then(links => {
                                 resolve(links);

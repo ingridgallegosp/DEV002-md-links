@@ -3,21 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 
-// Options Validation
-// falta
-// fs.access
-
 // File Existence Validation - TESTEADO
 const verifyPathExists =(givenPath) => {
     return fs.existsSync(givenPath)
 };
-// console.log(verifyPathExists(givenPath))
-
-/* const verifyFileExists = (givenPath) =>{
-  fs.access(givenPath, fs.constants.F_OK, (err) => {
-    console.log(`${givenPath} ${err ? 'does not exist' : 'exists'}`);
-  }); 
-}; */
 
 // Absolute Path Validation - TESTEADO
 const validatePath = (givenPath) => {
@@ -44,7 +33,7 @@ const pathValidation = (givenPath) => {
         return absolutePath;
     }
 };
-/*  */
+
 // File Validation - TESTEADO
 const pathIsFile = (givenPath) => {
     const stats = fs.statSync(givenPath);
@@ -68,19 +57,8 @@ const getMdFileArray = (givenPath) => {
     } 
     return files;
 }
-/* let arrayWithMdFiles = getMdFileArray(rutaPrueba);
-console.log(arrayWithMdFiles); */
 
 // Reading File
-/* fs.readFile(givenPath, 'utf8',(error, data) => {
-  if (error) {
-    console.error(error)
-    // return;
-  } else {
-    console.log(data);
-  }
-}); */
-
 // For each md file in array: Read and get links
 const readingFile = (givenPath) => {
     return new Promise((resolve, reject) => {
@@ -100,7 +78,7 @@ const readingFile = (givenPath) => {
 })
 .catch((error) => {
     console.log(error)
-}); */ // leer archivo
+}); */
 
 // Looking for links in a .md file
 // .exec() method executes a search for a match in a specified string
@@ -133,71 +111,11 @@ const getLinks = (givenPath) => {
     }); */ // muestra los links
 
 // Ask (with fetch or axios) if href works
-// funcion documentacion
-/*  axios.get(url)
-        .then(response => {
-            //console.log(response);
-            console.log('stats: ', response.status);
-            console.log('OK: ', response.statusText); 
-        })
-        .catch(error => {
-            console.log('stats: ', error.response.status);
-            console.log('OK: ', error.response.statusText);
-        });
- */
-
-//valida link uno por uno--OK
-/* const validateLink = (url) => {
-    axios.get(url)
-        .then(response => {
-            const objResolve = {
-                //...element,
-                status: response.status,
-                ok: response.statusText,
-            };
-            console.log(objResolve);
-        })
-        .catch(error => {
-            //console.log(error)
-            const objResolveFail = {
-                //...element,
-                status: error.response.status,
-                ok: 'FAIL',
-            };
-            console.log(objResolveFail);
-        });
-};  */
-//console.log(validateLink('https://nodejs.org/0'));
-
-//valida array de links
-
-/* const validateLinks = (linksArray) => {
-    const arrLinksStatus = linksArray.map((element) => {
-        axios.get(element.href) //link.href
-            .then(response => {
-                return{
-                    ...element,
-                    statusCode: response.status,
-                    msg: response.statusText,
-                };
-                //console.log(objResolve);
-            })
-            .catch(error => {
-                return  {
-                    ...element,
-                    statusCode: error.response.status,
-                    msg: 'FAIL'
-                    // ok: error.response.statusText,
-                };
-                //console.log(objResolveFail);
-            });
-    });
-}; // undefined  */
 const validateLinks = (linksArray) => {
     const validateLinksPromise = new Promise((resolve, reject) => {
         const arrLinksStatus = linksArray.map((element) => {
             return axios
-                .get(element.href) //link.href
+                .get(element.href)
                 .then(response => {
                     return {
                         ...element,
@@ -233,14 +151,6 @@ const validateLinks = (linksArray) => {
     return validateLinksPromise;
 }// promise pending
 
-
-// funcion prueba - valida link o array de links-- no funciona
-/* const url = 'https://es.wikipedia.org/wiki/Markdown';
-const requestAxios = axios.get(url);
-const validar = requestAxios.then((resolve) => {resolve.status}).catch((error) => error)
-validar.then(console.log)
-console.log(validar) //undefined */ 
-
 // --stats - TESTEADO
 const statsLinks = (arrayObj) => {
     const extraerElements = arrayObj.map((element) => element.href);//entro a array y obtengo los href  
@@ -272,9 +182,8 @@ const pathIsDirectory = (givenPath) => {
 
 // Getting directory content - TESTEADO
 const directoryContent = (folderPath) => fs.readdirSync(folderPath);
-//console.log(directoryContent)
 
-//const folderPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files';
+// Reading Directory
 function readDirectory(dir) {
     let allFiles = [];
     fs.readdirSync(dir).forEach(fileName => {
@@ -290,37 +199,6 @@ function readDirectory(dir) {
     });
     return allFiles;
 }
-//console.log(readDirectory(folderPath))
-
-
-
-/* const recursiva = (givenPath) =>{
-    console.log(givenPath)
-    let allFiles = [];
-    //si es directorio 
-    if (pathIsDirectory(givenPath)){
-        //guardo contenido de directorio
-        const arrayP = directoryContent(givenPath)
-        console.log('contenido directorio',arrayP)
-        arrayP.map((element) => {
-            //convertir a ruta absoluta
-            const internalPaths = pathValidation(element)
-            console
-
-            console.log('internal paths', internalPaths)
-            // validar si archivo o directorio
-            const savePaths = recursiva(internalPaths);
-            const files = allFiles.concat(savePaths)
-            allFiles.push(files)
-        })
-    // si es archivo
-    } else if (pathIsFile(givenPath) && mdFile(givenPath)){
-        allFiles.push(givenPath);
-    } 
-    return allFiles;
-} */
-
-
 
 module.exports = { 
     verifyPathExists,
@@ -337,5 +215,4 @@ module.exports = {
     statsLinks,
     brokenLinks,
     directoryContent,
-    readDirectory
-};  
+    readDirectory};  
