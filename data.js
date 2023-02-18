@@ -3,9 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 
-// const givenPath = './files/archive.md';
-const folderPath = './files/resumenProyecto/objetivos';
-// const rutaPrueba = './files/archive.md';
 // Options Validation
 // falta
 // fs.access
@@ -277,24 +274,24 @@ const pathIsDirectory = (givenPath) => {
 const directoryContent = (folderPath) => fs.readdirSync(folderPath);
 //console.log(directoryContent)
 
+//const folderPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files';
 function readDirectory(dir) {
     let allFiles = [];
-    const absolutePath = path.resolve(dir);
-    fs.readdirSync(absolutePath).forEach(fileName => {
-        const filePath = path.join(absolutePath, fileName);
+    fs.readdirSync(dir).forEach(fileName => {
+        const filePath = path.join(dir, fileName);
         const fileStat = fs.statSync(filePath);
 
         if (fileStat.isFile()) {
             allFiles.push(filePath)
         } else if (fileStat.isDirectory()) {
             let savePaths = readDirectory(filePath);
-            //const files = allFiles.concat(savePaths)
             allFiles.push(...savePaths)
         }
     });
     return allFiles;
 }
-//console.log(readDirectory('./files/'))
+//console.log(readDirectory(folderPath))
+
 
 
 /* const recursiva = (givenPath) =>{

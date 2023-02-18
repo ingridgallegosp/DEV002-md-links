@@ -5,7 +5,10 @@ const {
     pathValidation,
     getMdFileArray,
     getLinks,
-    readDirectory} = require('./data.js');
+    readDirectory,
+    pathIsDirectory,
+    pathIsFile,
+    mdFile} = require('./data.js');
 
 const mdLinks = (givenPath, options) =>{
     return new Promise((resolve, reject)=>{
@@ -15,36 +18,44 @@ const mdLinks = (givenPath, options) =>{
             //chequear si es ruta absoluta
             //cambiar de ruta relativa a absoluta
             let abPath = pathValidation(givenPath)
-            //console.log(abPath)
             //chequear si es archivo y si es archivo md 
-            if(getMdFileArray(abPath)){
+            if(pathIsFile(abPath)){
                 let arrayWithMdFiles = getMdFileArray(abPath);
-                // console.log(arrayWithMdFiles);
                 //si no hay archivos
                 if (!arrayWithMdFiles || arrayWithMdFiles.length === ''){
                     reject('No hay archivos extension .md')
                 } else if (arrayWithMdFiles){
                     // for each md file: read and get links -- se puede usar .map o .forEach
-                    let linksArray = arrayWithMdFiles.forEach((element) => { 
+                    arrayWithMdFiles.forEach((element) => { 
                         getLinks(element)
                             .then(links => {
                                 resolve(links);
-                                //console.log(links)
-                                if(links.length===0){
-                                    console.log('No contiene links')
-                                }
                             })
                             .catch((error) => {
-                                //console.log(error)
+                                console.log(error)
                             });   
                     });
                 }  
-            } else {
+            } if(pathIsDirectory(abPath)) {
                 //si no es archivo entonces es directorio
-                if(readDirectory(givenPath)){
-                    let arrayWithMdFiles = readDirectory(givenPath);
-                    return arrayWithMdFiles
-                }
+                let arrayDir = readDirectory(abPath)
+                let arrayWithMdFilesDir = arrayDir.filter((element) => mdFile(element));
+                //si no hay archivos
+                if (!arrayWithMdFilesDir || arrayWithMdFilesDir.length === ''){
+                    reject('No hay archivos extension .md')
+                } else if (arrayWithMdFilesDir){
+                    console.log(arrayWithMdFilesDir)
+                    // for each md file: read and get links
+                    arrayWithMdFilesDir.map((element) => { 
+                        getLinks(element)
+                            .then(links => {
+                                resolve(links);
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                            });   
+                    });
+                }              
             }  
         } else {
         // Si la ruta no existe, rechaza la promesa
