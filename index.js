@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const { 
     verifyPathExists,
     pathValidation,
@@ -12,11 +10,9 @@ const {
 
 const mdLinks = (givenPath, options) =>{
     return new Promise((resolve, reject)=>{
-        //Evaluar si ruta existe
-        // si la ruta existe:
+        // Evaluar si la ruta existe
         if(verifyPathExists(givenPath)){
-            //chequear si es ruta absoluta
-            //cambiar de ruta relativa a absoluta
+            //chequear si es ruta absoluta y/o cambiar de ruta relativa a absoluta
             let abPath = pathValidation(givenPath)
             //chequear si es archivo y si es archivo md 
             if(pathIsFile(abPath)){
