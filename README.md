@@ -1,4 +1,5 @@
 # Markdown Links
+
 ![mdlinks](./link.png)
 
 ## Índice
@@ -31,7 +32,10 @@ Esta es una herramienta de línea de comando (CLI) y librería instalable que fa
 
 ## 4. Instalación
 
-00
+El módulo se llama 000000000000 y antes de poder ejecutar este archivo, debemos terminar de conectectar el módulo que queremos testear ejecutando el siguiente comando:
+```
+    npm link 00000000000000000
+```
 
 ## 5. Funcionalidad
 
@@ -149,12 +153,12 @@ $ md-links ./some/example.md --stats
 Total: 3
 Unique: 3
 ```
-##### `--stats--validate`
-También podemos combinar `--stats` y `--validate` para obtener estadísticas que
+##### `--validate --stats `
+También podemos combinar `--validate` y `--stats` para obtener estadísticas que
 necesiten de los resultados de la validación.
 
 ```sh
-$ md-links ./some/example.md --stats --validate
+$ md-links ./some/example.md --validate --stats
 Total: 3
 Unique: 3
 Broken: 1
