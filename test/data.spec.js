@@ -10,22 +10,32 @@ const {
     getMdFileArray,
     getLinks,
     directoryContent,
-    validateLink,
+    validateLinks,
     statsLinks,
-    brokenLinks } = require('../data.js');
+    brokenLinks,
+    readDirectory, } = require('../data.js');
 
+/* const fs = require('fs'); 
+const path = require('path'); */
 const axios = require('axios');
 
 const testRelativePath = './files/archive.md';
 const testAbsolutePath = 'C:\\Users\\INGRID\\Desktop\\Laboratoria\\PROYECTO4-MDLINKS\\DEV002-md-links\\files\\archive.md';
-const testFakePath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto/archivos22.md';
-const testTxtPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/text.txt';
-const testOnlyFaq = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/lecturaComplementaria/faq.md';
+const testFakePath = './files/resumenProyecto/archivos22.md';
+const testTxtPath = './text.txt';
+const testOnlyFaq = './files/lecturaComplementaria/faq.md';
 const resultFaq = 'Para que el módulo sea instalable desde GitHub solo tiene que estar en un repo público de GitHub y contener un `package.json` válido';
-const testDirectoryPath = 'C:/Users/INGRID/Desktop/Laboratoria/PROYECTO4-MDLINKS/DEV002-md-links/files/resumenProyecto';
-const insideDirectory = ["archivos.md", "criteriosAceptacion", "objetivos", "opcionales.md"];
+const testDirectoryPath = './files/resumenProyecto';
 const urlTest = 'https://es.wikipedia.org/wiki/Markdown';
+
+const insideDirectory = [
+    'files\\resumenProyecto\\archivos.md',
+    'files\\resumenProyecto\\objetivos\\condicionales.md',
+    'files\\resumenProyecto\\objetivos\\objetivosAprendizaje.md',
+    'files\\resumenProyecto\\opcionales.md',
+];
 //Some languages use \ as an 'escape' character with special meaning. To get a single literal \ in Windows you need to write \\ 
+
 const arrayPrueba = [
     {
         href: 'https://es.wikipedia.org/wiki/Markdown',
@@ -53,7 +63,7 @@ describe('Tests para validar si ruta existe', () => {
     });
   
     it('debe mostrar true si la ruta dada existe',  () => {
-        const result = verifyPathExists(testAbsolutePath);
+        const result = verifyPathExists(testRelativePath);
         expect(result).toEqual(true);
     });
 
@@ -175,8 +185,8 @@ describe('Tests para filtrar md files en un array', () => {
     });
   
     it('debe mostrar array con archivos md',  () => {
-        const result = getMdFileArray(testAbsolutePath);
-        expect(result).toEqual([testAbsolutePath]);
+        const result = getMdFileArray(testRelativePath);
+        expect(result).toEqual([testRelativePath]);
     });  
 
 });
@@ -189,7 +199,7 @@ describe('readingFile', () => {
     }); 
 
     it('should return a promise', () => {
-        return readingFile(testAbsolutePath)
+        return readingFile(testRelativePath)
             .then(() => {
                 expect(readingFile).toBe(typeof Promise);
             }) 
@@ -205,7 +215,7 @@ describe('getLinks', () => {
     }); 
 
     it('should return a promise', () => {
-        return getLinks(readingFile(testAbsolutePath))
+        return getLinks(readingFile(testRelativePath))
             .then(() => {
                 expect(getLinks).toBe(typeof Promise);
             }) 
@@ -220,21 +230,21 @@ test("Link que funciona", () => {
     axios.get.mockImplementation(() => Promise.resolve({ data: {status: 200, ok: 'OK'} }));
 });
 
-/* describe('validateLinks', () => {
+describe('validateLinks', () => {
 
     it('should be a function', () => {
-        expect(typeof validateLink).toBe('function');
+        expect(typeof validateLinks).toBe('function');
     }); 
 
     it('should return a promise', () => {
-        return validateLink(urlTest)
+        return validateLinks(urlTest)
             .then(() => {
                 expect(getLinks).toBe(typeof Promise);
             }) 
             .catch((error) => {error});
     });
 
-}); */
+}); 
 
 // --stats
 describe('Tests para obtener stats de links', () => {
@@ -249,7 +259,7 @@ describe('Tests para obtener stats de links', () => {
     });  
 });
 
-// --stats--validate
+// --validate --stats
 describe('Tests para obtener stats y validate de links', () => {
 
     it('should be a function', () => {
@@ -262,16 +272,16 @@ describe('Tests para obtener stats y validate de links', () => {
     });  
 });
 
-// Reading directory
+// Recursive function
+
 describe('Tests para obtener los archivos de un directorio', () => {
 
     it('should be a function', () => {
-        expect(typeof directoryContent).toBe('function');
+        expect(typeof readDirectory).toBe('function');
     });
   
     it('debe mostrar true si la ruta corresponde a un archivo md',  () => {
-        const result = directoryContent(testDirectoryPath);
+        const result = readDirectory(testDirectoryPath);
         expect(result).toEqual(insideDirectory);
     });  
 });
- 

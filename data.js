@@ -100,6 +100,7 @@ const getLinks = (givenPath) => {
             .catch((error) => reject(error));
     });
 };
+
 /* getLinks(rutaPrueba)
     .then((links)=>{
         console.log(links)
@@ -177,10 +178,10 @@ const pathIsDirectory = (givenPath) => {
     return stats.isDirectory();
 };
 
-// Getting directory content - TESTEADO
+// Getting directory content 
 const directoryContent = (folderPath) => fs.readdirSync(folderPath);
 
-// Recursive function
+// Recursive function - TESTEADO
 function readDirectory(dir) {
     let allFiles = [];
     fs.readdirSync(dir).forEach(fileName => {
@@ -212,4 +213,5 @@ module.exports = {
     statsLinks,
     brokenLinks,
     directoryContent,
-    readDirectory};  
+    readDirectory,
+};  

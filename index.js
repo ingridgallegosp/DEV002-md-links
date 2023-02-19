@@ -6,7 +6,8 @@ const {
     readDirectory,
     pathIsDirectory,
     pathIsFile,
-    mdFile,} = require('./data.js');
+    mdFile,
+} = require('./data.js');
 
 const mdLinks = (givenPath, options) =>{
     return new Promise((resolve, reject)=>{
@@ -18,7 +19,7 @@ const mdLinks = (givenPath, options) =>{
             if(pathIsFile(abPath)){
                 let arrayWithMdFiles = getMdFileArray(abPath);
                 //si no hay archivos
-                if (!arrayWithMdFiles || arrayWithMdFiles.length === 0){
+                if (arrayWithMdFiles.length === 0){
                     reject('No hay archivos extension .md')
                 } else if (arrayWithMdFiles){
                     // console.log(arrayWithMdFiles)
@@ -39,7 +40,7 @@ const mdLinks = (givenPath, options) =>{
                 //filtrar archivos md
                 let arrayWithMdFilesDir = arrayDir.filter((element) => mdFile(element));
                 //si no hay archivos
-                if (!arrayWithMdFilesDir || arrayWithMdFilesDir.length === ''){
+                if ( arrayWithMdFilesDir.length === ''){
                     reject('Archivos extension .md NO encontrados')
                 } else if (arrayWithMdFilesDir){
                     console.log(arrayWithMdFilesDir)
