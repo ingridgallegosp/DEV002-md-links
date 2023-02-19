@@ -1,5 +1,4 @@
 # Markdown Links
-
 ![mdlinks](./link.png)
 
 ## Índice
@@ -28,9 +27,11 @@ Esta es una herramienta de línea de comando (CLI) y librería instalable que fa
 
 ## 3. Diagrama de Flujo
 
-![diagrama-de-flujo](./link.png)
+![diagrama-de-flujo](./diagrama.png)
 
 ## 4. Instalación
+
+00
 
 ## 5. Funcionalidad
 

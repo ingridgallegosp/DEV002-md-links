@@ -18,9 +18,6 @@ const toAbsolutePath = (givenPath) => {
     // eslint-disable-next-line no-undef
     return path.join(__dirname, givenPath);
 };
-// path.resolve
-// '/home' on Linux
-// 'C:\\Users' on Windows
 
 const pathValidation = (givenPath) => {
     if (validatePath(givenPath)){   
@@ -58,8 +55,7 @@ const getMdFileArray = (givenPath) => {
     return files;
 }
 
-// Reading File
-// For each md file in array: Read and get links
+// Reading file 
 const readingFile = (givenPath) => {
     return new Promise((resolve, reject) => {
         fs.readFile(givenPath, 'utf8', (error, data) => {
@@ -83,9 +79,10 @@ const readingFile = (givenPath) => {
 // Looking for links in a .md file
 // .exec() method executes a search for a match in a specified string
 const regex = /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g;
+
 const getLinks = (givenPath) => { 
     return new Promise((resolve, reject) => {
-        const links = [];
+        let links = [];
         readingFile(givenPath)
             .then((data) => {
                 let match = regex.exec(data);
@@ -98,6 +95,7 @@ const getLinks = (givenPath) => {
                     match = regex.exec(data);
                 }
                 resolve(links);
+                
             })
             .catch((error) => reject(error));
     });
@@ -122,14 +120,13 @@ const validateLinks = (linksArray) => {
                         statusCode: response.status,
                         msg: response.statusText,
                     };
-                    //console.log(objResolve);
                 })
                 .catch(error => {
                     return {
                         ...element,
                         statusCode: error.response.status,
                         msg: 'FAIL'
-                        // ok: error.response.statusText,
+                        // msg: error.response.statusText,
                     };
                 });
         });
@@ -163,11 +160,11 @@ const statsLinks = (arrayObj) => {
 
 // --stats --validate - TESTEADO
 const brokenLinks = (arrayObj) =>{
-    const extraerElements = arrayObj.map((element) => element.href);//entro a array y obtengo los href  
-    const eliminarRepetidos = new Set (extraerElements); //elimina links repetidos
+    const extraerElements = arrayObj.map((element) => element.href); 
+    const eliminarRepetidos = new Set (extraerElements); 
     //validar arrayObj
     const brokenLinks = arrayObj.filter((element) => element.statusCode >= '400');//filtro los que fallaron
-    return{
+    return {
         total:  arrayObj.length, 
         unique: eliminarRepetidos.size,
         broken: brokenLinks.length,
@@ -183,7 +180,7 @@ const pathIsDirectory = (givenPath) => {
 // Getting directory content - TESTEADO
 const directoryContent = (folderPath) => fs.readdirSync(folderPath);
 
-// Reading Directory
+// Recursive function
 function readDirectory(dir) {
     let allFiles = [];
     fs.readdirSync(dir).forEach(fileName => {

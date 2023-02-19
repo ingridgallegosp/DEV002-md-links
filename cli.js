@@ -11,15 +11,21 @@ const options2 = process.argv[4];
 //Pass arguments to node app: node cli.js './files/archive.md' --validate
 const mdlinksPromise = mdLinks(path, options, options2)
     .then((result)=>{
-        if (!options || options === null || options === undefined) {
-            return result;
+        if (!options || options === null || options === undefined){
+            if(result.length===0){
+                return 'No hay links';
+            }else{
+                return result;
+            }
         } else if (options === '--validate' && !options2){ 
             return validateLinks(result);
         } else if (options === '--stats' && !options2){
             return statsLinks(result);
-        } else if (options === '--stats' && options2 === '--validate'){
+        } else if (options === '--validate' && options2 === '--stats'){
             return validateLinks(result).then((result) => brokenLinks(result));
-        } 
+        } else {
+            return 'Opción NO valida.'
+        }
     })
     .catch((error) => {
         console.log(error)

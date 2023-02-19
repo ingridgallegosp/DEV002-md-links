@@ -6,7 +6,7 @@ const {
     readDirectory,
     pathIsDirectory,
     pathIsFile,
-    mdFile} = require('./data.js');
+    mdFile,} = require('./data.js');
 
 const mdLinks = (givenPath, options) =>{
     return new Promise((resolve, reject)=>{
@@ -18,9 +18,10 @@ const mdLinks = (givenPath, options) =>{
             if(pathIsFile(abPath)){
                 let arrayWithMdFiles = getMdFileArray(abPath);
                 //si no hay archivos
-                if (!arrayWithMdFiles || arrayWithMdFiles.length === ''){
+                if (!arrayWithMdFiles || arrayWithMdFiles.length === 0){
                     reject('No hay archivos extension .md')
                 } else if (arrayWithMdFiles){
+                    // console.log(arrayWithMdFiles)
                     // for each md file: read and get links -- se puede usar .map o .forEach
                     arrayWithMdFiles.forEach((element) => { 
                         getLinks(element)
@@ -33,30 +34,30 @@ const mdLinks = (givenPath, options) =>{
                     });
                 }  
             } if(pathIsDirectory(abPath)) {
-                //si no es archivo entonces es directorio
+                //si no es archivo entonces es directorio - leer directorio
                 let arrayDir = readDirectory(abPath)
+                //filtrar archivos md
                 let arrayWithMdFilesDir = arrayDir.filter((element) => mdFile(element));
                 //si no hay archivos
                 if (!arrayWithMdFilesDir || arrayWithMdFilesDir.length === ''){
-                    reject('No hay archivos extension .md')
+                    reject('Archivos extension .md NO encontrados')
                 } else if (arrayWithMdFilesDir){
-                    //console.log(arrayWithMdFilesDir)
+                    console.log(arrayWithMdFilesDir)
                     // for each md file: read and get links
-                    
-                    arrayWithMdFilesDir.forEach((element) => { 
+                    arrayWithMdFilesDir.map((element) => {
                         getLinks(element)
                             .then(links => {
                                 resolve(links);
                             })
                             .catch((error) => {
                                 console.log(error)
-                            });   
+                            });    
                     });
                 }              
             }  
         } else {
         // Si la ruta no existe, rechaza la promesa
-            reject('La ruta no existe');
+            reject('La ruta NO existe');
         }
     });
 };
