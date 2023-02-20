@@ -151,6 +151,7 @@ const validateLinks = (linksArray) => {
 
 // --stats - TESTEADO
 const statsLinks = (arrayObj) => {
+    //console.log('esto entra', arrayObj)
     const extraerElements = arrayObj.map((element) => element.href);//entro a array y obtengo los href  
     const eliminarRepetidos = [...new Set (extraerElements)] //elimina links repetidos
     return {
@@ -159,17 +160,18 @@ const statsLinks = (arrayObj) => {
     }
 };
 
-// --stats --validate - TESTEADO
+// --validate --stats - TESTEADO
 const brokenLinks = (arrayObj) =>{
     const extraerElements = arrayObj.map((element) => element.href); 
     const eliminarRepetidos = [...new Set (extraerElements)]; 
-    console.log(eliminarRepetidos)
+    // console.log(eliminarRepetidos)
     //validar arrayObj
     const brokenLinks = arrayObj.filter((element) => element.statusCode >= '400');//filtro los que fallaron
     return {
         total:  arrayObj.length, 
-        unique: eliminarRepetidos.length,
         broken: brokenLinks.length,
+        unique: eliminarRepetidos.length,
+        
     } 
 };
 

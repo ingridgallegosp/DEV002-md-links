@@ -22,7 +22,7 @@ const mdlinksPromise = mdLinks(path, options, options2)
         } else if (options === '--stats' && !options2){
             return statsLinks(result);
         } else if (options === '--validate' && options2 === '--stats'){
-            return validateLinks(result).then((result) => brokenLinks(result));
+            return validateLinks(result).then((data) => brokenLinks(data));
         } else {
             return 'Opción NO valida.'
         }

@@ -27,13 +27,13 @@ const mdLinks = (givenPath, options) =>{
                     const resultadoArc = arrayWithMdFiles.forEach((element) => { 
                         getLinks(element)
                             .then(links => {
-                                resolve(links);
+                                resolve (links);
                             })
                             .catch((error) => {
                                 console.log(error)
                             });   
                     });
-                    resultadoArc
+                    return resultadoArc
                 }  
             } if(pathIsDirectory(abPath)) {
                 //si no es archivo entonces es directorio - leer directorio
@@ -56,9 +56,12 @@ const mdLinks = (givenPath, options) =>{
                                 console.log(error)
                             });    
                     });
-                    //console.log(resultadoDir) // resgresa Array de promesas pendientes - se resuelve con promise.all
-                    const arrayPromises = Promise.all(resultadoDir).then(data => console.log(data.flat()));
-                }              
+                    // resultadoDir
+                    // console.log(resultadoDir) // regresa Array de promesas pendientes - se resuelve con promise.all
+                    const merge = Promise.all(resultadoDir).then(data => resolve (data.flat()));
+                    return merge// aqui algo no anda bien revisar
+                }
+                resolve
             }  
         } else {
         // Si la ruta no existe, rechaza la promesa
