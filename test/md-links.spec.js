@@ -109,13 +109,13 @@ describe('mdLinks', () => {
         expect(resultado).resolves.toEqual(resultadoArchiveValidateStats);
     }); 
 
-
-
+    // mdlinks con path sin links
     it('mostrar links obtenidos si se asigna un path de directorio', () => {
         const resultado = mdLinks(vacioPath)
         expect(resultado).rejects.toEqual('No hay archivos extension .md');
     }); 
 
+    // mdlinks con path que no existe
     it('mostrar links obtenidos si se asigna un path de directorio', () => {
         const resultado = mdLinks(noExistePath)
         expect(resultado).rejects.toEqual('La ruta NO existe');
@@ -128,4 +128,3 @@ describe('mdLinks', () => {
     });
 
 });
-

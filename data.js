@@ -152,22 +152,23 @@ const validateLinks = (linksArray) => {
 // --stats - TESTEADO
 const statsLinks = (arrayObj) => {
     const extraerElements = arrayObj.map((element) => element.href);//entro a array y obtengo los href  
-    const eliminarRepetidos = new Set (extraerElements) //elimina links repetidos
+    const eliminarRepetidos = [...new Set (extraerElements)] //elimina links repetidos
     return {
         total: arrayObj.length,
-        unique: eliminarRepetidos.size //new set es objeto
+        unique: eliminarRepetidos.length //new set es objeto
     }
 };
 
 // --stats --validate - TESTEADO
 const brokenLinks = (arrayObj) =>{
     const extraerElements = arrayObj.map((element) => element.href); 
-    const eliminarRepetidos = new Set (extraerElements); 
+    const eliminarRepetidos = [...new Set (extraerElements)]; 
+    console.log(eliminarRepetidos)
     //validar arrayObj
     const brokenLinks = arrayObj.filter((element) => element.statusCode >= '400');//filtro los que fallaron
     return {
         total:  arrayObj.length, 
-        unique: eliminarRepetidos.size,
+        unique: eliminarRepetidos.length,
         broken: brokenLinks.length,
     } 
 };

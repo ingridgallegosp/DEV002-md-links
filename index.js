@@ -24,7 +24,7 @@ const mdLinks = (givenPath, options) =>{
                 } else if (arrayWithMdFiles){
                     // console.log(arrayWithMdFiles)
                     // for each md file: read and get links -- se puede usar .map o .forEach
-                    arrayWithMdFiles.forEach((element) => { 
+                    const resultadoArc = arrayWithMdFiles.forEach((element) => { 
                         getLinks(element)
                             .then(links => {
                                 resolve(links);
@@ -33,6 +33,7 @@ const mdLinks = (givenPath, options) =>{
                                 console.log(error)
                             });   
                     });
+                    resultadoArc
                 }  
             } if(pathIsDirectory(abPath)) {
                 //si no es archivo entonces es directorio - leer directorio
@@ -43,17 +44,20 @@ const mdLinks = (givenPath, options) =>{
                 if ( arrayWithMdFilesDir.length === ''){
                     reject('Archivos extension .md NO encontrados')
                 } else if (arrayWithMdFilesDir){
-                    console.log(arrayWithMdFilesDir)
+                    // console.log(arrayWithMdFilesDir) 
                     // for each md file: read and get links
-                    arrayWithMdFilesDir.map((element) => {
-                        getLinks(element)
+                    const resultadoDir = arrayWithMdFilesDir.map((element) => {
+                        return  getLinks(element)
                             .then(links => {
-                                resolve(links);
+                                return links
+                                //resolve(links); // termina el proceso con el resolve del primer archivo
                             })
                             .catch((error) => {
                                 console.log(error)
                             });    
                     });
+                    //console.log(resultadoDir) // resgresa Array de promesas pendientes - se resuelve con promise.all
+                    const arrayPromises = Promise.all(resultadoDir).then(data => console.log(data.flat()));
                 }              
             }  
         } else {
