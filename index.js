@@ -59,7 +59,7 @@ const mdLinks = (givenPath, options) =>{
                     // resultadoDir
                     // console.log(resultadoDir) // regresa Array de promesas pendientes - se resuelve con promise.all
                     const merge = Promise.all(resultadoDir).then(data => resolve (data.flat()));
-                    return merge// aqui algo no anda bien revisar
+                    return merge
                 }
                 resolve
             }  
