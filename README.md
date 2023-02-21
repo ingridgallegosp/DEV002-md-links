@@ -32,9 +32,9 @@ Esta es una herramienta de línea de comando (CLI) y librería instalable que fa
 
 ## 4. Instalación
 
-El módulo se llama 000000000000 y antes de poder ejecutar este archivo, debemos terminar de conectectar el módulo que queremos testear ejecutando el siguiente comando:
+El módulo se llama md-links-ig y antes de poder ejecutar este archivo, debemos terminar de conectectar el módulo que queremos testear ejecutando el siguiente comando:
 ```
-    npm link 00000000000000000
+    npm install md-links-ig
 ```
 
 ## 5. Funcionalidad
