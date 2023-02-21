@@ -1,0 +1,1 @@
+Para que el módulo sea instalable desde GitHub solo tiene que estar en un repo público de GitHub y contener un `package.json` válido
