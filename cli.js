@@ -21,7 +21,7 @@ const mdlinksPromise = mdLinks(path, options, options2)
             return validateLinks(result);
         } else if (options === '--stats' && !options2){
             return statsLinks(result);
-        } else if (options === '--validate' && options2 === '--stats'){
+        } else if ((options === '--validate' && options2 === '--stats') || (options === '--stats' && options2 === '--validate')){
             return validateLinks(result).then((data) => brokenLinks(data));//broken links callback?
         } else {
             return 'Opción NO valida.'
